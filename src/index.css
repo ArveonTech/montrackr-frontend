@@ -192,6 +192,12 @@
   --tracking-widest: calc(var(--tracking-normal) + 0.1em);
 }
 
+@layer base {
+  body {
+    @apply bg-background text-foreground font-poppins;
+  }
+}
+
 body {
   letter-spacing: var(--tracking-normal);
 }
