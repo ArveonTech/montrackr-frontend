@@ -1,5 +1,4 @@
 import axios from "axios";
-import { handleApiError } from "./errorHandler";
 
 export const apiRequest = async (method = "GET", resource, data = null, query = "", options = {}) => {
   const baseUrl = import.meta.env.VITE_BACKEND_URL;
@@ -14,6 +13,6 @@ export const apiRequest = async (method = "GET", resource, data = null, query = 
 
     return response.data;
   } catch (error) {
-    throw handleApiError(error);
+    throw new Error(error.response.data.message || "Something went wrong");
   }
 };

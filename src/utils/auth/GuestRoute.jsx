@@ -1,18 +1,12 @@
 import { Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import isTokenCheck from "./isTokenCheck";
 import useGenerateAccessToken from "@/hooks/auth/useGenereteAccessToken";
 
 const GuestRoute = ({ children }) => {
   const [status, setStatus] = useState("loading");
   const accessToken = localStorage.getItem("access-token");
 
-  const { isPending, isError, data, error } = useQuery({
-    queryKey: ["auth-guard"],
-    queryFn: useGenerateAccessToken(accessToken),
-    enabled: !accessToken || !isTokenCheck(accessToken),
-  });
+  const { isPending, isError, data, error } = useGenerateAccessToken(accessToken);
 
   useEffect(() => {
     if (isPending) {
@@ -28,8 +22,7 @@ const GuestRoute = ({ children }) => {
 
   if (status === "error") return null;
 
-  if (status === "success") return <Navigate to="/home" replace />;
-
+  // if (status === "success") return <Navigate to="/home" replace />;
   return children;
 };
 

@@ -1,8 +1,8 @@
-import AboutComponent from "@/features/landing/AboutComponent";
-import ContactComponent from "@/features/landing/ContactComponent";
-import FeaturesComponent from "@/features/landing/FeaturesComponent";
-import HeroComponent from "@/features/landing/HeroComponent";
-import NavigationComponent from "@/features/landing/NavigationComponent";
+import AboutComponent from "@/features/landing/Component/AboutComponent";
+import ContactComponent from "@/features/landing/Component/ContactComponent";
+import FeaturesComponent from "@/features/landing/Component/FeaturesComponent";
+import HeroComponent from "@/features/landing/Component/HeroComponent";
+import NavigationComponent from "@/features/landing/Component/NavigationComponent";
 import AOS from "aos";
 import "aos/dist/aos.css";
 

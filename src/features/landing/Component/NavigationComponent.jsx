@@ -53,17 +53,23 @@ const NavigationComponent = () => {
 
       {/* RIGHT */}
       <div className="ml-auto hidden lg:flex gap-2 ">
-        <Button variant="ghost">Login</Button>
-        <Button>Register</Button>
+        <Button variant="ghost" asChild className={`cursor-pointer`}>
+          <a href="/login">Login</a>
+        </Button>
+        <Button className={`cursor-pointer`}>
+          <a href="/register">Register</a>
+        </Button>
       </div>
 
       {/* Tablet */}
       <div className="hidden md:flex lg:hidden items-center gap-4">
         <div className="flex gap-2 ">
-          <Button variant="ghost" className={`cursor-pointer`}>
-            Login
+          <Button variant="ghost" className={`cursor-pointer`} asChild>
+            <a href="/login">Login</a>
           </Button>
-          <Button className={`cursor-pointer`}>Register</Button>
+          <Button className={`cursor-pointer`}>
+            <a href="/register">Register</a>
+          </Button>
         </div>
         <div
           className="cursor-pointer hover:bg-muted p-1"
