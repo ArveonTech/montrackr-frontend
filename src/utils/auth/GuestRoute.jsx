@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import useGenerateAccessToken from "@/hooks/auth/useGenereteAccessToken";
+import useGenerateAccessToken from "@/hooks/auth/shared/useGenereteAccessToken";
 
 const GuestRoute = ({ children }) => {
   const [status, setStatus] = useState("loading");

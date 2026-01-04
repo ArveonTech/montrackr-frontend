@@ -1,19 +1,19 @@
 import { LoginForm } from "@/components/login-form";
-import useLoginWithCredentials from "@/hooks/auth/useLoginWithCredentials";
-import useParamsController from "@/hooks/others/UseParamsController";
+import useLoginWithCredentials from "@/hooks/auth/login/useLoginWithCredentials";
+import useParamsControllers from "@/hooks/others/useParamsControllers";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { getParam } = useParamsController();
+  const { getParam } = useParamsControllers();
   const [formLogin, setFormLogin] = useState({
     email: "",
     password: "",
   });
   const [errorForm, setErrorForm] = useState(null);
-
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const statusLogin = decodeURIComponent(getParam("login"));
 
@@ -25,7 +25,11 @@ const LoginPage = () => {
     }));
   };
 
-  const { isLoading: isLoadingCredentials, isError: isErrorCredentials, data: dataCredentials, error: errorCredentials, refetch: refetchCredentials } = useLoginWithCredentials(formLogin);
+  const handleLoading = (value) => {
+    setIsLoading(value);
+  };
+
+  const { isError: isErrorCredentials, data: dataCredentials, error: errorCredentials, mutate: mutateCredentials } = useLoginWithCredentials(formLogin, handleLoading);
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -38,19 +42,27 @@ const LoginPage = () => {
       return setErrorForm(errorCredentials.message);
     }
 
-    if (dataCredentials) {
-      localStorage.setItem("access-token", dataCredentials.tokens.accessToken);
-      return navigate("/home");
+    if (!isErrorCredentials && dataCredentials) {
+      if (dataCredentials.status === "pending") {
+        navigate("/verify-otp-login", { state: { status: dataCredentials.status, from: "login", dataUser: dataCredentials.data } });
+      } else {
+        const accessToken = dataCredentials.tokens.accessToken || null;
+
+        if (!accessToken) return setErrorForm("Something went wrong");
+
+        localStorage.setItem("access-token", accessToken);
+        navigate("/home");
+      }
     }
 
-    if (statusLogin === "failed") {
+    if (!isErrorCredentials && !dataCredentials && statusLogin === "failed") {
       return setErrorForm("Login failed!");
     }
-  }, [isErrorCredentials, errorCredentials, dataCredentials, statusLogin]);
+  }, [isErrorCredentials, dataCredentials, statusLogin]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    refetchCredentials();
+    mutateCredentials();
   };
 
   const handleButtonLoginWithGoogle = () => {
@@ -68,7 +80,7 @@ const LoginPage = () => {
           errorForm={errorForm}
           showPassword={showPassword}
           handleShowPassword={handleShowPassword}
-          isLoadingCredentials={isLoadingCredentials}
+          isLoadingCredentials={isLoading}
         />
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 
-const useParamsController = () => {
+const useParamsControllers = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const setParam = (key, value) => {
@@ -42,4 +42,4 @@ const useParamsController = () => {
   return { getParam, setParam, getAllParam, setManyParam };
 };
 
-export default useParamsController;
+export default useParamsControllers;
