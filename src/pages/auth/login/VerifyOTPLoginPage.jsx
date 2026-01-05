@@ -41,11 +41,11 @@ const VerifyOTPLoginPage = () => {
       return setIsDontAccess(true);
     }
 
-    setStartTimer(true);
     if (location.state.status === "pending" && location.state.from === "login") {
       setErrorOTP("Your account not verified. Please verify your email.");
       mutateSendOTPLogin({ dataUser: location.state.dataUser });
     }
+    setStartTimer(true);
   }, [location]);
 
   const sendOTP = () => {

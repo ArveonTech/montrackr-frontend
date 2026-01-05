@@ -1,15 +1,15 @@
 import { apiRequest } from "@/services/core/apiRequest";
 import { useMutation } from "@tanstack/react-query";
 
-const useSendOTPFromForgotPassword = ({ handleLoading }) => {
+const useSetPasswordForgotPassword = ({ handleLoading }) => {
   return useMutation({
-    mutationKey: ["send-forgot-password"],
-    retry: 0,
+    mutationKey: ["set-password-forgot-password"],
     onMutate: () => {
       handleLoading(true);
     },
+    retry: 0,
     mutationFn: ({ dataUser }) => {
-      return apiRequest("POST", "auth/request-otp/forgot-password", { dataUser }, "", {
+      return apiRequest("POST", "auth/set-password/forgot-password", { dataUser }, "", {
         headers: {
           "Content-Type": "application/json",
         },
@@ -25,4 +25,4 @@ const useSendOTPFromForgotPassword = ({ handleLoading }) => {
   });
 };
 
-export default useSendOTPFromForgotPassword;
+export default useSetPasswordForgotPassword;

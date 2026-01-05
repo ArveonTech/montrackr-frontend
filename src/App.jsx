@@ -11,6 +11,8 @@ import SetPasswordPage from "./pages/auth/social/SetPasswordPage";
 import VerifyOTPLoginPage from "./pages/auth/login/VerifyOTPLoginPage";
 import VerifyOTPRegisterPage from "./pages/auth/register/VerifyOTPRegisterPage";
 import EmailInputPage from "./pages/auth/forgot-password/EmailInputPage";
+import VerifyOTPForgotPasswordPage from "./pages/auth/forgot-password/VerifyOTPForgotPasswordPage";
+import SetPasswordForgotPasswordPage from "./pages/auth/forgot-password/SetPasswordForgotPasswordPage";
 
 const queryClient = new QueryClient();
 
@@ -68,6 +70,22 @@ const router = createBrowserRouter([
     element: (
       // <GuestRoute>
       <EmailInputPage />
+      // </GuestRoute>
+    ),
+  },
+  {
+    path: "/verify-otp-forgot-password",
+    element: (
+      // <GuestRoute>
+      <VerifyOTPForgotPasswordPage />
+      // </GuestRoute>
+    ),
+  },
+  {
+    path: "/set-password-forgot-password",
+    element: (
+      // <GuestRoute>
+      <SetPasswordForgotPasswordPage />
       // </GuestRoute>
     ),
   },

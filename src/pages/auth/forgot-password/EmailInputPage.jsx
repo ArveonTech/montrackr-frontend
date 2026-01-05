@@ -43,7 +43,8 @@ const EmailInputPage = () => {
     }
 
     if (!isErrorVerifyEmail && dataVerifyEmail) {
-      navigate("/home");
+      console.info(dataVerifyEmail);
+      navigate("/verify-otp-forgot-password", { state: { status: dataVerifyEmail.status, from: "forgot-password", dataUser: dataVerifyEmail.data } });
     }
   }, [isErrorVerifyEmail, errorVerifyEmail, dataVerifyEmail]);
 

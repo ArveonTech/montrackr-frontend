@@ -6,13 +6,13 @@ import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui
 import { Eye, EyeOff } from "lucide-react";
 import useValidationSetPassword from "@/hooks/auth/useValidationSetPassword";
 import useEmptySetPassword from "@/hooks/auth/useEmptySetPassword";
-import useParamsControllers from "@/hooks/others/useParamsControllers";
 import DontHaveAccess from "@/pages/DontAccess";
 import { Spinner } from "@/components/ui/spinner";
-import useSetPassword from "@/hooks/auth/social/useSetPasword";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import useSetPasswordForgotPassword from "@/hooks/auth/social/useSetForgotPassword";
 
-const SetPasswordPage = () => {
+const SetPasswordForgotPasswordPage = () => {
+  const location = useLocation();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [errorInputForm, setErrorInputForm] = useState({ success: true, inputForm: { password: null, confirmPassword: null } });
@@ -24,21 +24,21 @@ const SetPasswordPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isDontAccess, setIsDontAccess] = useState(false);
 
-  const { getAllParam } = useParamsControllers();
-
   const handleLoading = (value) => {
     setIsLoading(value);
   };
 
-  const { isError: isErrorSetPassword, error: errorSetPassword, data: dataSetPassword, mutate: mutateSetPassword } = useSetPassword({ handleLoading });
+  const { isError: isErrorSetPassword, error: errorSetPassword, data: dataSetPassword, mutate: mutateSetPassword } = useSetPasswordForgotPassword({ handleLoading });
 
   useEffect(() => {
-    const params = getAllParam();
-
-    if (!params.get("status") && !params.get("email") && !params.get("username")) {
-      setIsDontAccess(false);
+    if (!location.state) {
+      return setIsDontAccess(true);
     }
-  }, []);
+
+    if (!location.state.status === "pending" && !location.state.from === "forgot-password") {
+      return setIsDontAccess(true);
+    }
+  }, [location]);
 
   const emptyForm = useEmptySetPassword({ form: password });
   const invalidForm = useValidationSetPassword({ form: password });
@@ -59,8 +59,8 @@ const SetPasswordPage = () => {
     if (isErrorSetPassword) return;
 
     if (!isErrorSetPassword && dataSetPassword) {
-      const accessToken = dataSetPassword?.tokens?.accessToken || null;
-      if (!accessToken) return se("Something went wrong");
+      const accessToken = dataSetPassword.tokens.accessToken || null;
+      if (!accessToken) return sendOTP("Something went wrong");
 
       localStorage.setItem("access-token", accessToken);
       navigate("/home");
@@ -75,15 +75,7 @@ const SetPasswordPage = () => {
 
     setErrorInputForm({ success: true, inputForm: { password: null, confirmPassword: null } });
 
-    const dataForm = {
-      status: getAllParam().get("status"),
-      user: {
-        email: getAllParam().get("email"),
-        username: getAllParam().get("username"),
-        password: password.password,
-      },
-    };
-
+    const dataForm = { newPassword: password.password, ...location.state.dataUser };
     mutateSetPassword({ dataUser: dataForm });
   };
 
@@ -148,4 +140,4 @@ const SetPasswordPage = () => {
   );
 };
 
-export default SetPasswordPage;
+export default SetPasswordForgotPasswordPage;

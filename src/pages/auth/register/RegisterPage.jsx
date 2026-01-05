@@ -51,7 +51,7 @@ const RegisterPage = () => {
       return setErrorForm(errorCredentials.message);
     }
 
-    if (dataCredentials) {
+    if (!isErrorCredentials && dataCredentials) {
       navigate("/verify-otp-register", { state: { status: dataCredentials.status, from: "register", dataUser: dataCredentials.data } });
     }
 
