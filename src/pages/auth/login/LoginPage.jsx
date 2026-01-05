@@ -66,7 +66,7 @@ const LoginPage = () => {
   };
 
   const handleButtonLoginWithGoogle = () => {
-    window.location.href = import.meta.env.VITE_AUTH_GOOGLE;
+    window.location.href = `${import.meta.env.VITE_AUTH_GOOGLE}?source="login"`;
   };
 
   return (

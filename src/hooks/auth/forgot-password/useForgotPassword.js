@@ -1,15 +1,15 @@
 import { apiRequest } from "@/services/core/apiRequest";
 import { useMutation } from "@tanstack/react-query";
 
-const useVerifyOTPFromLogin = ({ handleLoading }) => {
+const useForgotPassword = ({ handleLoading }) => {
   return useMutation({
-    mutationKey: ["verify-otp-login"],
-    retry: 0,
+    mutationKey: ["forgot-password"],
     onMutate: () => {
       handleLoading(true);
     },
+    retry: 0,
     mutationFn: ({ dataUser }) => {
-      return apiRequest("POST", "auth/verify-otp/login", { dataUser }, "", {
+      return apiRequest("POST", "auth/forgot-password", { dataUser }, "", {
         headers: {
           "Content-Type": "application/json",
         },
@@ -25,4 +25,4 @@ const useVerifyOTPFromLogin = ({ handleLoading }) => {
   });
 };
 
-export default useVerifyOTPFromLogin;
+export default useForgotPassword;

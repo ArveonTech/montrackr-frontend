@@ -21,7 +21,7 @@ const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setisLoading] = useState(false);
 
-  const statusRegister = decodeURIComponent(getParam("register"));
+  const statusRegister = decodeURIComponent(getParam("status"));
 
   const handleChangeInputFormRegister = (event) => {
     const { name, value } = event.target;
@@ -52,13 +52,7 @@ const RegisterPage = () => {
     }
 
     if (dataCredentials) {
-      const accessToken = dataCredentials.tokens.accessToken || null;
-
-      if (!accessToken) return errorForm("Something went wrong");
-
-      localStorage.setItem("access-token", accessToken);
-
-      return navigate("/home");
+      navigate("/verify-otp-register", { state: { status: dataCredentials.status, from: "register", dataUser: dataCredentials.data } });
     }
 
     if (statusRegister === "failed") {
@@ -80,7 +74,7 @@ const RegisterPage = () => {
   };
 
   const handleButtonRegisterWithGoogle = () => {
-    window.location.href = import.meta.env.VITE_AUTH_GOOGLE;
+    window.location.href = `${import.meta.env.VITE_AUTH_GOOGLE}?source="register"`;
   };
 
   return (

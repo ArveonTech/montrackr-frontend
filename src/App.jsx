@@ -9,6 +9,8 @@ import LoginPage from "./pages/auth/login/LoginPage";
 import RegisterPage from "./pages/auth/register/RegisterPage";
 import SetPasswordPage from "./pages/auth/social/SetPasswordPage";
 import VerifyOTPLoginPage from "./pages/auth/login/VerifyOTPLoginPage";
+import VerifyOTPRegisterPage from "./pages/auth/register/VerifyOTPRegisterPage";
+import EmailInputPage from "./pages/auth/forgot-password/EmailInputPage";
 
 const queryClient = new QueryClient();
 
@@ -46,10 +48,26 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/verify-otp-register",
+    element: (
+      // <GuestRoute>
+      <VerifyOTPRegisterPage />
+      // </GuestRoute>
+    ),
+  },
+  {
     path: "/set-password",
     element: (
       // <GuestRoute>
       <SetPasswordPage />
+      // </GuestRoute>
+    ),
+  },
+  {
+    path: "/email-verify",
+    element: (
+      // <GuestRoute>
+      <EmailInputPage />
       // </GuestRoute>
     ),
   },

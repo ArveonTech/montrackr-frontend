@@ -20,14 +20,14 @@ export function SignupForm({ formRegister, handleChangeInput, handleSubmit, hand
           <FieldGroup>
             <Field>
               <FieldLabel htmlFor="name">Username</FieldLabel>
-              <Input id="name" type="text" placeholder="John Doe" name="username" required className={`placeholder::opacity-80`} value={formRegister.username} onChange={handleChangeInput} />
+              <Input id="name" type="text" placeholder="John Doe" name="username" required className={`placeholder:opacity-70`} value={formRegister.username} onChange={handleChangeInput} />
               <Activity mode={!errorInputForm?.success && errorInputForm?.inputForm.username ? "visible" : "hidden"}>
                 <p className="text-xs text-red-500 italic">*{errorInputForm?.inputForm.username}</p>
               </Activity>
             </Field>
             <Field>
               <FieldLabel htmlFor="email">Email</FieldLabel>
-              <Input id="email" type="email" placeholder="m@example.com" name="email" required value={formRegister.email} onChange={handleChangeInput} />
+              <Input id="email" type="email" placeholder="m@example.com" name="email" required className={`placeholder:opacity-70`} value={formRegister.email} onChange={handleChangeInput} />
               <Activity mode={!errorInputForm?.success && errorInputForm?.inputForm.email ? "visible" : "hidden"}>
                 <p className="text-xs text-red-500 italic">*{errorInputForm?.inputForm.email}</p>
               </Activity>
@@ -36,7 +36,17 @@ export function SignupForm({ formRegister, handleChangeInput, handleSubmit, hand
             <Field>
               <FieldLabel htmlFor="password">Password</FieldLabel>
               <div className="relative">
-                <Input id="password" type={showPassword ? "text" : "password"} name="password" placeholder="********" required autoComplete="current-password" value={formRegister.password} onChange={handleChangeInput} />
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="********"
+                  required
+                  className={`placeholder:opacity-70`}
+                  autoComplete="current-password"
+                  value={formRegister.password}
+                  onChange={handleChangeInput}
+                />
                 {showPassword ? (
                   <Eye className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer" onClick={handleShowPassword} />
                 ) : (

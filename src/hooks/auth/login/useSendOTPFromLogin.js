@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 
 const useSendOTPFromLogin = ({ handleLoading }) => {
   return useMutation({
-    mutationKey: ["send-otp"],
+    mutationKey: ["send-otp-login"],
     retry: 0,
     onMutate: () => {
       handleLoading(true);

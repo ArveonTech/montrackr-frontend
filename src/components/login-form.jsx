@@ -28,12 +28,22 @@ export function LoginForm({ formLogin, handleChangeInput, handleSubmit, handleBu
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <a href="/forgot-password" className="ml-auto inline-block text-sm underline-offset-4 hover:underline">
+                  <a href="/email-verify" className="ml-auto inline-block text-sm underline-offset-4 hover:underline">
                     Forgot your password?
                   </a>
                 </div>
                 <div className="relative">
-                  <Input id="password" type={showPassword ? "text" : "password"} name="password" placeholder="********" required autoComplete="current-password" value={formLogin.password} onChange={handleChangeInput} />
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    placeholder="********"
+                    required
+                    autoComplete="current-password"
+                    value={formLogin.password}
+                    onChange={handleChangeInput}
+                    className={`placeholder:opacity-70`}
+                  />
                   {showPassword ? (
                     <Eye className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer" onClick={handleShowPassword} />
                   ) : (
