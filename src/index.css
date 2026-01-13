@@ -22,6 +22,8 @@
   --font-merriweather: "Merriweather", serif;
   --font-JetBrains: "JetBrains Mono", monospace;
   --font-poppins: "Poppins", sans-serif;
+
+  --breakpoint-2xs: 91rem;
 }
 
 :root {

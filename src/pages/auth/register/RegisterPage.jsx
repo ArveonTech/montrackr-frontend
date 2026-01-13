@@ -45,8 +45,6 @@ const RegisterPage = () => {
   const invalidForm = UseValidationRegister({ form: formRegister });
 
   useEffect(() => {
-    setErrorForm(null);
-
     if (isErrorCredentials) {
       return setErrorForm(errorCredentials.message);
     }

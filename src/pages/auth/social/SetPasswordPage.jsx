@@ -7,7 +7,7 @@ import { Eye, EyeOff } from "lucide-react";
 import useValidationSetPassword from "@/hooks/auth/useValidationSetPassword";
 import useEmptySetPassword from "@/hooks/auth/useEmptySetPassword";
 import useParamsControllers from "@/hooks/others/useParamsControllers";
-import DontHaveAccess from "@/pages/DontAccess";
+import DontHaveAccess from "@/pages/others/DontAccess";
 import { Spinner } from "@/components/ui/spinner";
 import useSetPassword from "@/hooks/auth/social/useSetPasword";
 import { useNavigate } from "react-router-dom";
@@ -63,7 +63,7 @@ const SetPasswordPage = () => {
       if (!accessToken) return se("Something went wrong");
 
       localStorage.setItem("access-token", accessToken);
-      navigate("/home");
+      navigate("/dashboard");
     }
   }, [isErrorSetPassword, errorSetPassword, dataSetPassword]);
 

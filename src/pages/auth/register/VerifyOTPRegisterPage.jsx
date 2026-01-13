@@ -2,8 +2,8 @@ import { OTPForm } from "@/components/otp-form";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import useCountdown60 from "@/hooks/others/useCountdown60";
-import DontHaveAccess from "@/pages/DontAccess";
-import BlankLoadingPage from "@/pages/BlankLoadingPage";
+import DontHaveAccess from "@/pages/others/DontAccess";
+import BlankLoadingPage from "@/pages/others/BlankLoadingPage";
 import useSendOTPFromRegister from "@/hooks/auth/register/useSendOTPFromRegister";
 import useVerifyOTPFromRegister from "@/hooks/auth/shared/useVerifyOTPFromRegister";
 
@@ -76,7 +76,7 @@ const VerifyOTPRegisterPage = () => {
       if (!accessToken) return sendOTP("Something went wrong");
 
       localStorage.setItem("access-token", accessToken);
-      navigate("/home");
+      navigate("/dashboard");
     }
   }, [isErrorVerifyOTPRegister, errorVerifyOTPRegister, dataVerifyOTPRegister]);
 

@@ -36,8 +36,6 @@ const LoginPage = () => {
   };
 
   useEffect(() => {
-    setErrorForm(null);
-
     if (isErrorCredentials) {
       return setErrorForm(errorCredentials.message);
     }
@@ -51,7 +49,7 @@ const LoginPage = () => {
         if (!accessToken) return setErrorForm("Something went wrong");
 
         localStorage.setItem("access-token", accessToken);
-        navigate("/home");
+        navigate("/dashboard");
       }
     }
 

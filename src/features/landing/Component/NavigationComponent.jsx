@@ -1,7 +1,6 @@
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -28,7 +27,7 @@ const NavigationComponent = () => {
   }, []);
 
   return (
-    <nav className="bg-sidebar h-16 px-10 flex justify-between shadow items-center sticky top-0 z-10">
+    <nav className="bg-sidebar h-16 px-10 flex justify-between items-center sticky top-0 z-10 mt-5">
       <div className="flex items-center gap-3">
         <img src="./iconsWeb.jpg" className="w-6" />
         <h1 className="font-JetBrains text-xl">
@@ -72,7 +71,7 @@ const NavigationComponent = () => {
           </Button>
         </div>
         <div
-          className="cursor-pointer hover:bg-muted p-1"
+          className="cursor-pointer hover:bg-muted p-1 rounded"
           onClick={() => {
             setNavigationHamburger(!navigationHamburger);
           }}

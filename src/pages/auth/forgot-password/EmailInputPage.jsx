@@ -36,14 +36,11 @@ const EmailInputPage = () => {
   const { isError: isErrorVerifyEmail, data: dataVerifyEmail, error: errorVerifyEmail, mutate: mutateVerifyEmail } = useForgotPassword({ handleLoading });
 
   useEffect(() => {
-    setErrorForm(null);
-
     if (isErrorVerifyEmail) {
       return setErrorForm(errorVerifyEmail.message);
     }
 
     if (!isErrorVerifyEmail && dataVerifyEmail) {
-      console.info(dataVerifyEmail);
       navigate("/verify-otp-forgot-password", { state: { status: dataVerifyEmail.status, from: "forgot-password", dataUser: dataVerifyEmail.data } });
     }
   }, [isErrorVerifyEmail, errorVerifyEmail, dataVerifyEmail]);

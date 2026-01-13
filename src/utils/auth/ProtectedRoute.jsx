@@ -1,36 +1,35 @@
 import { Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import isTokenCheck from "./isTokenCheck";
+import { useEffect } from "react";
 import useGenerateAccessToken from "@/hooks/auth/shared/useGenereteAccessToken";
+import isTokenCheck from "./isTokenCheck";
 
-const GuestRoute = ({ children }) => {
-  const [status, setStatus] = useState("loading");
+const ProtectedRoute = ({ children }) => {
   const accessToken = localStorage.getItem("access-token");
 
-  const { isPending, isError, data, error } = useQuery({
-    queryKey: ["auth-guard"],
-    queryFn: useGenerateAccessToken,
-    enabled: !accessToken || !isTokenCheck(accessToken),
-  });
+  if (accessToken && isTokenCheck(accessToken)) {
+    return children;
+  }
+
+  const { isLoading, isError, data } = useGenerateAccessToken(accessToken);
 
   useEffect(() => {
-    if (isPending) {
-      setStatus("loading");
-    } else if (isError) {
-      setStatus("error");
-    } else if (data) {
-      setStatus("success");
+    const newToken = data?.tokens?.accessToken;
+    if (newToken) {
+      localStorage.setItem("access-token", newToken);
     }
-  }, [isPending, isError, data, error]);
+  }, [data]);
 
-  if (status === "loading") return null;
+  if (isLoading) return null;
 
-  if (status === "error") return null;
+  if (isError) {
+    return <Navigate to="/login" replace />;
+  }
 
-  if (status !== "valid") return <Navigate to="/home" replace />;
+  if (data?.tokens?.accessToken) {
+    return children;
+  }
 
-  return children;
+  return <Navigate to="/login" replace />;
 };
 
-export default GuestRoute;
+export default ProtectedRoute;

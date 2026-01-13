@@ -1,28 +1,22 @@
 import { Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import useGenerateAccessToken from "@/hooks/auth/shared/useGenereteAccessToken";
+import isTokenCheck from "./isTokenCheck";
 
 const GuestRoute = ({ children }) => {
-  const [status, setStatus] = useState("loading");
   const accessToken = localStorage.getItem("access-token");
 
-  const { isPending, isError, data, error } = useGenerateAccessToken(accessToken);
+  if (accessToken && isTokenCheck(accessToken)) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
-  useEffect(() => {
-    if (isPending) {
-      setStatus("loading");
-    } else if (isError) {
-      setStatus("error");
-    } else if (data) {
-      setStatus("success");
-    }
-  }, [isPending, isError, data, error]);
+  const { isLoading, isError, data } = useGenerateAccessToken(accessToken);
 
-  if (status === "loading") return null;
+  if (isLoading) return null;
+  if (isError) return children;
+ 
+  localStorage.setItem("access-token", data?.tokens?.accessToken);
+  if (data) return <Navigate to="/dashboard" replace />;
 
-  if (status === "error") return null;
-
-  // if (status === "success") return <Navigate to="/home" replace />;
   return children;
 };
 

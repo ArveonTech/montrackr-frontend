@@ -6,7 +6,7 @@ import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui
 import { Eye, EyeOff } from "lucide-react";
 import useValidationSetPassword from "@/hooks/auth/useValidationSetPassword";
 import useEmptySetPassword from "@/hooks/auth/useEmptySetPassword";
-import DontHaveAccess from "@/pages/DontAccess";
+import DontHaveAccess from "@/pages/others/DontAccess";
 import { Spinner } from "@/components/ui/spinner";
 import { useLocation, useNavigate } from "react-router-dom";
 import useSetPasswordForgotPassword from "@/hooks/auth/social/useSetForgotPassword";
@@ -63,7 +63,7 @@ const SetPasswordForgotPasswordPage = () => {
       if (!accessToken) return sendOTP("Something went wrong");
 
       localStorage.setItem("access-token", accessToken);
-      navigate("/home");
+      navigate("/dashboard");
     }
   }, [isErrorSetPassword, errorSetPassword, dataSetPassword]);
 

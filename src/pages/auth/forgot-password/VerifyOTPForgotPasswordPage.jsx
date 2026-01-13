@@ -2,8 +2,8 @@ import { OTPForm } from "@/components/otp-form";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import useCountdown60 from "@/hooks/others/useCountdown60";
-import DontHaveAccess from "@/pages/DontAccess";
-import BlankLoadingPage from "@/pages/BlankLoadingPage";
+import DontHaveAccess from "@/pages/others/DontAccess";
+import BlankLoadingPage from "@/pages/others/BlankLoadingPage";
 import useSendOTPFromForgotPassword from "@/hooks/auth/forgot-password/useSendOTPFromForgotPassword";
 import useVerifyOTPFromForgotPassword from "@/hooks/auth/shared/useVerifyOTPFromForgotPassword";
 

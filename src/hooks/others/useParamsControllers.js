@@ -39,7 +39,15 @@ const useParamsControllers = () => {
     setSearchParams(newParams);
   };
 
-  return { getParam, setParam, getAllParam, setManyParam };
+  const deleteParam = (key) => {
+    const newParams = new URLSearchParams(searchParams);
+
+    newParams.delete(key);
+
+    setSearchParams(newParams);
+  };
+
+  return { getParam, setParam, getAllParam, setManyParam,deleteParam };
 };
 
 export default useParamsControllers;

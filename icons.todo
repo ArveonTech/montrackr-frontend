@@ -1,0 +1,51 @@
+# Category Icons Reference
+
+Dokumen ini berisi referensi **ikon yang direkomendasikan** untuk setiap kategori pada aplikasi keuangan. Tujuannya agar ikon konsisten, mudah dipahami, dan tetap clean secara visual.
+
+> Catatan: Nama ikon menggunakan gaya **Lucide / generic icon naming**, mudah diganti ke library lain dengan konsep serupa.
+
+---
+
+## 💸 Expense Categories
+
+| Category        | Icon Name                   | Alasan                        |
+| --------------- | --------------------------- | ----------------------------- |
+| essentials      | `shopping-cart` / `package` | Kebutuhan pokok & daily needs |
+| lifestyle       | `sparkles` / `coffee`       | Nongkrong, self-reward, vibes |
+| health          | `heart-pulse` / `activity`  | Kesehatan & medis             |
+| family & social | `users` / `user-group`      | Keluarga & aktivitas sosial   |
+| financial       | `wallet` / `landmark`       | Bank, cicilan, administrasi   |
+
+---
+
+## 💰 Income Categories
+
+| Category  | Icon Name               | Alasan                |
+| --------- | ----------------------- | --------------------- |
+| salary    | `briefcase`             | Penghasilan utama     |
+| bonus     | `award` / `star`        | Reward & tambahan     |
+| freelance | `laptop` / `code`       | Kerja lepas & project |
+| business  | `store` / `trending-up` | Usaha & pertumbuhan   |
+| gift      | `gift`                  | Pemberian / hadiah    |
+
+---
+
+## 🧩 Misc Category
+
+| Category | Icon Name                             | Alasan                  |
+| -------- | ------------------------------------- | ----------------------- |
+| others   | `more-horizontal` / `dots-horizontal` | Kategori umum / lainnya |
+
+---
+
+## 🎨 Design Notes
+
+* **Income** → ikon bernuansa *growth & reward*
+* **Expense** → ikon bernuansa *pengeluaran & aktivitas*
+* Disarankan konsisten dalam:
+
+  * ukuran ikon
+  * stroke width
+  * style (outline / solid)
+
+Dokumen ini bisa digunakan sebagai **single source of truth** untuk icon mapping di seluruh aplikasi.

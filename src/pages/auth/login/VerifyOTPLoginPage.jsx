@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import useSendOTPFromLogin from "@/hooks/auth/login/useSendOTPFromLogin";
 import useCountdown60 from "@/hooks/others/useCountdown60";
-import DontHaveAccess from "@/pages/DontAccess";
-import BlankLoadingPage from "@/pages/BlankLoadingPage";
+import DontHaveAccess from "@/pages/others/DontAccess";
+import BlankLoadingPage from "@/pages/others/BlankLoadingPage";
 
 const VerifyOTPLoginPage = () => {
   const navigate = useNavigate();
@@ -69,18 +69,24 @@ const VerifyOTPLoginPage = () => {
 
   // useEffect verify otp login
   useEffect(() => {
-    if (isErrorVerifyOTPLogin) {
-      return setErrorOTP(errorVerifyOTPLogin.message);
+    if (!isErrorVerifyOTPLogin) return;
+    if (!errorVerifyOTPLogin?.message) return;
+
+    setErrorOTP(errorVerifyOTPLogin.message);
+  }, [isErrorVerifyOTPLogin, errorVerifyOTPLogin]);
+
+  useEffect(() => {
+    if (!dataVerifyOTPLogin) return;
+
+    const accessToken = dataVerifyOTPLogin.tokens?.accessToken;
+    if (!accessToken) {
+      sendOTP("Something went wrong");
+      return;
     }
 
-    if (!isErrorVerifyOTPLogin && dataVerifyOTPLogin) {
-      const accessToken = dataVerifyOTPLogin.tokens.accessToken || null;
-      if (!accessToken) return sendOTP("Something went wrong");
-
-      localStorage.setItem("access-token", accessToken);
-      navigate("/home");
-    }
-  }, [isErrorVerifyOTPLogin, errorVerifyOTPLogin, dataVerifyOTPLogin]);
+    localStorage.setItem("access-token", accessToken);
+    navigate("/dashboard");
+  }, [dataVerifyOTPLogin, navigate]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
