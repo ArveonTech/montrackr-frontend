@@ -283,7 +283,7 @@ const FormTransactions = ({ onClose, dataEditTransactions }) => {
               Cancel
             </Button>
             <Button type="submit" className={`cursor-pointer`}>
-              Save
+              {dataEditTransactions && dataEditTransactions.status === "edit" ? "Update" : "Add"}
             </Button>
           </div>
         </form>
