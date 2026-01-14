@@ -5,7 +5,7 @@ const DialogTransactions = ({ item }) => {
         <strong>Title</strong>: {item.title}
       </p>
       <p>
-        <strong>Amount</strong>: Rp.{Number(item?.amount).toLocaleString("id-ID")}
+        <strong>Amount</strong>: Rp {Number(item?.amount).toLocaleString("id-ID")}
       </p>
       <p className="capitalize">
         <strong>Type</strong>: {item.type}

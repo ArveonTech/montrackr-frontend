@@ -15,6 +15,7 @@ import VerifyOTPForgotPasswordPage from "./pages/auth/forgot-password/VerifyOTPF
 import SetPasswordForgotPasswordPage from "./pages/auth/forgot-password/SetPasswordForgotPasswordPage";
 import DashboardPage from "./pages/dashboard/DashboardPage";
 import TransactionsPage from "./pages/transactions/TransactionsPage";
+import RecurringPage from "./pages/Recurring/RecurringPage";
 
 const queryClient = new QueryClient();
 
@@ -112,6 +113,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <TransactionsPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/recurring",
+    element: (
+      <ProtectedRoute>
+        <RecurringPage />
       </ProtectedRoute>
     ),
   },

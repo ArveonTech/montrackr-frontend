@@ -66,7 +66,7 @@ const ListComponent = ({ item, classname }) => {
           {/* Amount */}
           <div className={cn("col-span-2 sm:col-span-1 text-right")}>
             <p className={cn(`font-JetBrains text-[17px] lg:text-md`)}>
-              {item.type === "income" ? "+" : "-"}Rp.{Number(item?.amount).toLocaleString("id-ID")}
+              {item.type === "income" ? "+" : "-"}Rp {Number(item?.amount).toLocaleString("id-ID")}
             </p>
           </div>
         </div>

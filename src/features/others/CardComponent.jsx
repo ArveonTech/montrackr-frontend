@@ -52,8 +52,7 @@ const CardComponent = ({ item, className, isLoadingDelete, handleDeleteTransacti
           </div>
 
           <p className="font-JetBrains text-[17px] lg:text-md">
-            {item.type === "income" ? "+" : "-"}Rp.
-            {Number(item?.amount).toLocaleString("id-ID")}
+            {item.type === "income" ? "+" : "-"}Rp {Number(item?.amount).toLocaleString("id-ID")}
           </p>
         </div>
       </AlertDialogTrigger>

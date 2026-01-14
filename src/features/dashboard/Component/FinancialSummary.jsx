@@ -28,7 +28,7 @@ const FinancialSummary = ({ balanceUser = 0, incomeUser = 0, expenseUser = 0 }) 
             <CardTitle className={`text-2xl`}>{card.title}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className={cn(`font-JetBrains text-2xl `, card.styleAmount)}>Rp.{Number(card.amount).toLocaleString("id-ID")}</p>
+            <p className={cn(`font-JetBrains text-2xl `, card.styleAmount)}>Rp {Number(card.amount).toLocaleString("id-ID")}</p>
           </CardContent>
         </Card>
       ))}
