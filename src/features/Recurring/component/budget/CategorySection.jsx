@@ -1,9 +1,16 @@
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import CategoryItem from "./CategoryItem";
 import { Ellipsis, HeartPlus, Pencil, Sparkles, Users, Wallet, ShoppingCart } from "lucide-react";
+import BudgetDialog from "./BudgetDialog";
 
-const CategorySection = ({ categoryBudget }) => {
-  const [addBudgetOpen, setAddBudgetOpen] = useState(false);
+const CategorySection = ({ categoryBudget, handleSubmitBudget, isLoadingBudget, errorFormBudget, dataEditBudget, successEditBudget }) => {
+  const [openBudget, setOpenBudget] = useState(false);
+
+  useEffect(() => {
+    if (successEditBudget) {
+      setOpenBudget(false);
+    }
+  }, [successEditBudget]);
 
   const data = [
     { name: "Essentials", amount: categoryBudget?.essentials, icon: <ShoppingCart size={18} />, value: "essentials" },
@@ -17,26 +24,40 @@ const CategorySection = ({ categoryBudget }) => {
   const total = data.reduce((s, i) => s + i.amount, 0);
 
   return (
-    <section className="rounded-xl bg-[#F4FAFA] p-5">
-      {/* Header */}
-      <div className="mb-4 flex items-center justify-between border-b pb-2">
-        <h5 className="text-lg font-semibold text-slate-700">Category</h5>
-        <Pencil size={16} className="cursor-pointer text-slate-500" />
-      </div>
+    <>
+      {openBudget && (
+        <BudgetDialog
+          openBudget={openBudget}
+          setOpenBudget={setOpenBudget}
+          onClose={() => setOpenBudget(false)}
+          isLoadingBudget={isLoadingBudget}
+          handleSubmitBudget={handleSubmitBudget}
+          errorFormBudget={errorFormBudget}
+          dataEditBudget={dataEditBudget}
+        />
+      )}
+      <section className="rounded-xl bg-[#F4FAFA] p-5">
+        {/* Header */}
+        <div className="mb-4 flex items-center justify-between border-b pb-2">
+          <h5 className="text-lg font-semibold text-slate-700">Category</h5>
 
-      {/* Category list */}
-      <div className="grid sm:grid-cols-2 gap-3">
-        {data.map((c) => (
-          <CategoryItem key={c.name} name={c.name} amount={c.amount} icon={c.icon} value={c.value} />
-        ))}
-      </div>
+          <Pencil size={16} className="cursor-pointer text-slate-500" onClick={() => setOpenBudget(true)} />
+        </div>
 
-      {/* Total */}
-      <div className="rounded-lg bg-destructive text-destructive-foreground px-4 py-3 mt-4">
-        <div className="text-sm">Total Category :</div>
-        <div className="text-lg font-semibold">{`Rp ${new Intl.NumberFormat("id-ID").format(total)}`}</div>
-      </div>
-    </section>
+        {/* Category list */}
+        <div className="grid sm:grid-cols-2 gap-3">
+          {data.map((c) => (
+            <CategoryItem key={c.name} name={c.name} amount={c.amount} icon={c.icon} value={c.value} />
+          ))}
+        </div>
+
+        {/* Total */}
+        <div className="rounded-lg bg-destructive text-destructive-foreground px-4 py-3 mt-4">
+          <div className="text-sm">Total Category :</div>
+          <div className="text-lg font-semibold">{`Rp ${new Intl.NumberFormat("id-ID").format(total)}`}</div>
+        </div>
+      </section>
+    </>
   );
 };
 

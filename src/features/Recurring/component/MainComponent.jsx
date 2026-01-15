@@ -5,9 +5,12 @@ import SomethingWentWrong from "@/features/others/SomethingWentWrong";
 import GoalsCard from "./goals/GoalsCard";
 import AddBudgetCard from "./budget/AddBudgetCard";
 import BudgetDialog from "./budget/BudgetDialog";
+import Loading from "@/features/others/Loading";
 
-const MainComponent = ({ isErrorGetBudget, errorGetBudget, dataGetBudget, isLoading }) => {
+const MainComponent = ({ isErrorGetBudget, errorGetBudget, dataGetBudget, isLoading, isLoadingBudget, handleSubmitBudget, errorFormBudget, successAddBudget, successEditBudget }) => {
   const [activeTab, setActiveTab] = useState("budget");
+
+  // State for budget and expenses
   const [monthExpense, setMonthExpense] = useState(0);
   const [isBudgetEmpty, setIsBudgetEmpty] = useState(false);
   const [openBudget, setOpenBudget] = useState(false);
@@ -20,6 +23,8 @@ const MainComponent = ({ isErrorGetBudget, errorGetBudget, dataGetBudget, isLoad
     financial: 0,
     others: 0,
   });
+
+  // state for goals
 
   // Update state when dataGetBudget changes
   useEffect(() => {
@@ -53,6 +58,14 @@ const MainComponent = ({ isErrorGetBudget, errorGetBudget, dataGetBudget, isLoad
     setOpenBudget(true);
   };
 
+  // Close budget dialog when budget is successfully added or edited
+  useEffect(() => {
+    if (successAddBudget) {
+      setIsBudgetEmpty(false);
+      setOpenBudget(false);
+    }
+  }, [successAddBudget]);
+
   return (
     <main className="mx-10 mt-20">
       <header className="flex gap-4 relative">
@@ -65,7 +78,7 @@ const MainComponent = ({ isErrorGetBudget, errorGetBudget, dataGetBudget, isLoad
         <div className={`border border-b-0 h-6.5 rounded-t-lg absolute transition-all duration-700 ${activeTab === "subscription" ? "translate-x-22 w-30" : "translate-x-0 w-20"}`}></div>
       </header>
 
-      {openBudget && <BudgetDialog openBudget={openBudget} setOpenBudget={setOpenBudget} onClose={() => setOpenBudget(false)} />}
+      {openBudget && <BudgetDialog openBudget={openBudget} setOpenBudget={setOpenBudget} onClose={() => setOpenBudget(false)} isLoadingBudget={isLoadingBudget} handleSubmitBudget={handleSubmitBudget} errorFormBudget={errorFormBudget} />}
 
       <section className={`border transition-all duration-700 ${activeTab === "subscription" ? "rounded-t-lg" : ""}`}>
         {activeTab === "budget" ? (
@@ -77,15 +90,24 @@ const MainComponent = ({ isErrorGetBudget, errorGetBudget, dataGetBudget, isLoad
                 <div className="lg:col-span-2 space-y-8">
                   {isBudgetEmpty ? (
                     <AddBudgetCard onClick={handleOpenAddBudget} />
+                  ) : isLoading ? (
+                    <Loading />
                   ) : (
                     <>
-                      <BudgetMoneySection amount={monthExpense} budget={budget} loading={isLoading} />
-                      <CategorySection categoryBudget={categoryBudget} />
+                      <BudgetMoneySection amount={monthExpense} budget={budget} />
+                      <CategorySection
+                        categoryBudget={categoryBudget}
+                        dataEditBudget={dataGetBudget}
+                        errorFormBudget={errorFormBudget}
+                        handleSubmitBudget={handleSubmitBudget}
+                        isLoadingBudget={isLoadingBudget}
+                        successEditBudget={successEditBudget}
+                      />
                     </>
                   )}
                 </div>
                 <div className="lg:col-span-1 mx-auto mt-20 lg:my-auto">
-                  <GoalsCard currentAmount={monthExpense} goalAmount={budget} />
+                  <GoalsCard currentAmount={monthExpense} goalAmount={0} />
                 </div>
               </div>
             )}

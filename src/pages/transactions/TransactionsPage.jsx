@@ -47,7 +47,7 @@ const TransactionsPage = () => {
   const statusAddTransactions = useSelector((state) => state.addTransactions);
   const statusEditTransactions = useSelector((state) => state.editTransactions);
   const user_id = useGetUserIdFromLocalStorage();
-  const { getParam, getAllParam } = useParamsControllers();
+  const { getParam } = useParamsControllers();
   const { setFilterInputParam } = useTransactionFilter();
   const accessToken = localStorage.getItem("access-token");
 

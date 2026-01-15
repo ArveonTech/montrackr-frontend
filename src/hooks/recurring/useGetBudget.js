@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const useGetBudget = ({ accessToken }) => {
   return useQuery({
-    queryKey: ["profile"],
+    queryKey: ["get-budgets"],
     queryFn: () =>
       apiRequest("GET", "budgets", null, "", {
         headers: {

@@ -169,7 +169,6 @@ const FormTransactions = ({ onClose, dataEditTransactions }) => {
     if (errorEditTransactions) dispatch(editTransactions({ status: false, message: "Failed to update transaction." }));
   }, [isErrorEditTransactions]);
 
-
   return (
     <>
       {isLoading ? (
@@ -188,7 +187,10 @@ const FormTransactions = ({ onClose, dataEditTransactions }) => {
           {/* AMOUNT */}
           <div className="space-y-2">
             <Label>Amount</Label>
-            <Input name="amount" type="text" value={formatRupiah(form.amount)} onChange={handleChange} placeholder="5.000.000" />
+            <div className="flex items-center gap-2">
+              <p className="bg-accent p-1 rounded">Rp </p>
+              <Input name="amount" type="text" value={formatRupiah(form.amount)} onChange={handleChange} placeholder="5.000.000" />
+            </div>
             <Activity mode={errorform.isValid === false && errorform.errors?.amount ? "visible" : "hidden"}>
               <p className=" text-sm mb-5 text-red-500">*{errorform.errors?.amount}</p>
             </Activity>
