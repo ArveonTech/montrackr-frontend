@@ -36,7 +36,13 @@ const ListComponent = ({ item, classname }) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <div className={cn("grid grid-cols-5 items-center border-b bg-card px-5 py-3 shadow-sm cursor-pointer", classname, item?.type === "income" ? "bg-primary/10 text-primary-foreground" : "bg-destructive text-destructive-foreground")}>
+        <div
+          className={cn(
+            "grid grid-cols-5 items-center border-b bg-card px-5 py-3 shadow-sm cursor-pointer",
+            classname,
+            item?.type === "income" ? "bg-primary/10 text-primary-foreground" : item?.type === "expense" ? "bg-destructive/95 text-destructive-foreground" : "bg-accent/95 text-accent-foreground"
+          )}
+        >
           {/* Date */}
           <div className="col-span-1 hidden sm:block">
             <Badge className={`${item?.type === "income" ? "bg-primary/50" : "bg-white"}`}>

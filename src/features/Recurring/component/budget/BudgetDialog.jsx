@@ -66,7 +66,7 @@ const BudgetDialog = ({ openBudget, setOpenBudget, onClose, isLoadingBudget, han
 
   return (
     <Dialog open={openBudget} onOpenChange={setOpenBudget}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="md:max-w-lg">
         <DialogHeader>
           <DialogTitle>Set Monthly Budget</DialogTitle>
         </DialogHeader>
@@ -93,7 +93,7 @@ const BudgetDialog = ({ openBudget, setOpenBudget, onClose, isLoadingBudget, han
               <div className="space-y-4">
                 <p className="text-sm font-medium">Budget per Category</p>
 
-                <div className="grid grid-cols-2 gap-3 mt-5">
+                <div className="grid md:grid-cols-2 gap-3 mt-5">
                   {CATEGORIES.map((category) => (
                     <div key={category.id} className="space-y-2">
                       <Label className="w-28 text-sm text-muted-foreground">{category.label}</Label>

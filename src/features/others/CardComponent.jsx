@@ -32,7 +32,7 @@ const CardComponent = ({ item, className, isLoadingDelete, handleDeleteTransacti
         <div
           className={cn(
             "h-28 px-5 bg-card text-card-foreground flex flex-col rounded-xl border py-4 shadow-sm justify-between cursor-pointer",
-            item?.type === "income" ? "bg-primary/10 text-primary-foreground" : "bg-destructive/95 text-destructive-foreground",
+            item?.type === "income" ? "bg-primary/10 text-primary-foreground" : item?.type === "expense" ? "bg-destructive/95 text-destructive-foreground" : "bg-accent/95 text-accent-foreground",
             className
           )}
         >
@@ -70,16 +70,18 @@ const CardComponent = ({ item, className, isLoadingDelete, handleDeleteTransacti
               </div>
             </AlertDialogHeader>
             <div className="flex justify-between">
-              <div className="space-x-2">
-                <Button className={`cursor-pointer`} onClick={() => handleEdit(item)}>
-                  Edit
-                </Button>
-                <AlertDialogAction asChild>
-                  <Button variant="destructive" className={`cursor-pointer`} onClick={() => handleDeleteTransactions(item._id)}>
-                    Delete
+              {item.type !== "goal" && (
+                <div className="space-x-2">
+                  <Button className={`cursor-pointer`} onClick={() => handleEdit(item)}>
+                    Edit
                   </Button>
-                </AlertDialogAction>
-              </div>
+                  <AlertDialogAction asChild>
+                    <Button variant="destructive" className={`cursor-pointer`} onClick={() => handleDeleteTransactions(item._id)}>
+                      Delete
+                    </Button>
+                  </AlertDialogAction>
+                </div>
+              )}
               <AlertDialogCancel className={`cursor-pointer`}>Cancel</AlertDialogCancel>
             </div>
           </>

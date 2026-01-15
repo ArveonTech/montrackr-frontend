@@ -3,11 +3,38 @@ import BudgetMoneySection from "./budget/budget-money-section";
 import CategorySection from "@/features/Recurring/component/budget/CategorySection";
 import SomethingWentWrong from "@/features/others/SomethingWentWrong";
 import GoalsCard from "./goals/GoalsCard";
+import AddGoalCard from "./goals/AddGoalCard";
+import GoalDialog from "./goals/GoalDialog";
+import ContributeGoalDialog from "./goals/ContributeGoalDialog";
 import AddBudgetCard from "./budget/AddBudgetCard";
 import BudgetDialog from "./budget/BudgetDialog";
 import Loading from "@/features/others/Loading";
 
-const MainComponent = ({ isErrorGetBudget, errorGetBudget, dataGetBudget, isLoading, isLoadingBudget, handleSubmitBudget, errorFormBudget, successAddBudget, successEditBudget }) => {
+const MainComponent = ({
+  isErrorGetBudget,
+  errorGetBudget,
+  dataGetBudget,
+  isLoading,
+  isLoadingBudget,
+  handleSubmitBudget,
+  errorFormBudget,
+  successAddBudget,
+  successEditBudget,
+  // goal props
+  isErrorGetGoal,
+  errorGetGoal,
+  dataGetGoal,
+  isLoadingGetGoal,
+  isLoadingGoal,
+  handleSubmitGoal,
+  errorFormGoal,
+  // contribute
+  handleSubmitContribute,
+  errorFormContribute,
+  successAddGoal,
+  successEditGoal,
+  handleDeleteGoal,
+}) => {
   const [activeTab, setActiveTab] = useState("budget");
 
   // State for budget and expenses
@@ -25,6 +52,10 @@ const MainComponent = ({ isErrorGetBudget, errorGetBudget, dataGetBudget, isLoad
   });
 
   // state for goals
+  const [isGoalEmpty, setIsGoalEmpty] = useState(false);
+  const [openGoal, setOpenGoal] = useState(false);
+  const [openContribute, setOpenContribute] = useState(false);
+  const [goalData, setGoalData] = useState(null);
 
   // Update state when dataGetBudget changes
   useEffect(() => {
@@ -54,8 +85,29 @@ const MainComponent = ({ isErrorGetBudget, errorGetBudget, dataGetBudget, isLoad
     }
   }, [dataGetBudget]);
 
+  // Update goal state when dataGetGoal changes
+  useEffect(() => {
+    if (dataGetGoal && dataGetGoal.data && dataGetGoal.data.hasBudget === true) {
+      setGoalData(dataGetGoal.data.items || null);
+      setIsGoalEmpty(false);
+    }
+
+    if (dataGetGoal && dataGetGoal.data && dataGetGoal.data.hasBudget === false) {
+      setIsGoalEmpty(true);
+      setGoalData(null);
+    }
+  }, [dataGetGoal]);
+
   const handleOpenAddBudget = () => {
     setOpenBudget(true);
+  };
+
+  const handleOpenAddGoal = () => {
+    setOpenGoal(true);
+  };
+
+  const handleOpenContribute = () => {
+    setOpenContribute(true);
   };
 
   // Close budget dialog when budget is successfully added or edited
@@ -65,6 +117,27 @@ const MainComponent = ({ isErrorGetBudget, errorGetBudget, dataGetBudget, isLoad
       setOpenBudget(false);
     }
   }, [successAddBudget]);
+
+  // close goal dialog when added
+  useEffect(() => {
+    if (successAddGoal) {
+      setIsGoalEmpty(false);
+      setOpenGoal(false);
+    }
+  }, [successAddGoal]);
+
+  // close goal dialog when edited
+  useEffect(() => {
+    if (successEditGoal) {
+      setOpenGoal(false);
+    }
+  }, [successEditGoal]);
+
+  useEffect(() => {
+    if (successAddGoal) {
+      setOpenContribute(false);
+    }
+  }, [successAddGoal]);
 
   return (
     <main className="mx-10 mt-20">
@@ -106,8 +179,47 @@ const MainComponent = ({ isErrorGetBudget, errorGetBudget, dataGetBudget, isLoad
                     </>
                   )}
                 </div>
+
                 <div className="lg:col-span-1 mx-auto mt-20 lg:my-auto">
-                  <GoalsCard currentAmount={monthExpense} goalAmount={0} />
+                  {isErrorGetGoal ? (
+                    <SomethingWentWrong />
+                  ) : isGoalEmpty ? (
+                    <AddGoalCard onClick={handleOpenAddGoal} />
+                  ) : isLoadingGetGoal ? (
+                    <Loading />
+                  ) : (
+                    <GoalsCard
+                      title={goalData?.title}
+                      currentAmount={goalData?.currentBalance || 0}
+                      goalAmount={goalData?.targetGoal || 0}
+                      onEdit={() => setOpenGoal(true)}
+                      onDelete={handleDeleteGoal}
+                      onContribute={() => setOpenContribute(true)}
+                    />
+                  )}
+
+                  {openGoal && (
+                    <GoalDialog
+                      openGoal={openGoal}
+                      setOpenGoal={setOpenGoal}
+                      onClose={() => setOpenGoal(false)}
+                      isLoadingGoal={isLoadingGoal}
+                      handleSubmitGoal={handleSubmitGoal}
+                      errorFormGoal={errorFormGoal}
+                      dataEditGoal={goalData ? dataGetGoal : null}
+                    />
+                  )}
+
+                  {openContribute && (
+                    <ContributeGoalDialog
+                      openContribute={openContribute}
+                      setOpenContribute={setOpenContribute}
+                      onClose={() => setOpenContribute(false)}
+                      isLoadingContribute={isLoadingGoal}
+                      handleSubmitContribute={handleSubmitContribute}
+                      errorFormContribute={errorFormContribute}
+                    />
+                  )}
                 </div>
               </div>
             )}
