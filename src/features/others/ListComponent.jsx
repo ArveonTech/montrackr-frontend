@@ -40,7 +40,7 @@ const ListComponent = ({ item, classname }) => {
           className={cn(
             "grid grid-cols-5 items-center border-b bg-card px-5 py-3 shadow-sm cursor-pointer",
             classname,
-            item?.type === "income" ? "bg-primary/10 text-primary-foreground" : item?.type === "expense" ? "bg-destructive/95 text-destructive-foreground" : "bg-accent/95 text-accent-foreground"
+            item?.type === "income" ? "bg-primary/10 text-primary-foreground" : item?.type === "expense" ? "bg-destructive/95 text-destructive-foreground" : "bg-accent/95 text-accent-foreground",
           )}
         >
           {/* Date */}
@@ -72,7 +72,7 @@ const ListComponent = ({ item, classname }) => {
           {/* Amount */}
           <div className={cn("col-span-2 sm:col-span-1 text-right")}>
             <p className={cn(`font-JetBrains text-[17px] lg:text-md`)}>
-              {item.type === "income" ? "+" : "-"}Rp {Number(item?.amount).toLocaleString("id-ID")}
+              {item.type === "income" ? "+" : item?.type === "expense" ? "-" : ""}Rp {Number(item?.amount).toLocaleString("id-ID")}
             </p>
           </div>
         </div>

@@ -59,7 +59,7 @@ const GoalDialog = ({ openGoal, setOpenGoal, onClose, isLoadingGoal, handleSubmi
                 <Label>Target Goal</Label>
                 <div className="flex items-center gap-2">
                   <p className="bg-accent p-1 rounded">Rp </p>
-                  <Input placeholder="5.000.000" value={formatRupiah(targetGoal)} onChange={handleChangeTarget} />
+                  <Input placeholder="5.000.000" value={formatRupiah(targetGoal)} onChange={handleChangeTarget} autoComplete="off" />
                 </div>
                 <Activity mode={!errorFormGoal.isValidate && errorFormGoal.targetGoal ? "visible" : "hidden"}>
                   <p className="text-sm mt-1 text-red-500">{errorFormGoal.targetGoal}</p>
@@ -70,7 +70,7 @@ const GoalDialog = ({ openGoal, setOpenGoal, onClose, isLoadingGoal, handleSubmi
                 <Label>Current Balance</Label>
                 <div className="flex items-center gap-2">
                   <p className="bg-accent p-1 rounded">Rp </p>
-                  <Input placeholder="0" value={formatRupiah(currentBalance)} onChange={handleChangeCurrent} />
+                  <Input placeholder="0" value={formatRupiah(currentBalance)} onChange={handleChangeCurrent} autoComplete="off" />
                 </div>
               </div>
             </div>

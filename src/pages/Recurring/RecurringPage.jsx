@@ -7,20 +7,37 @@ import useAddGoal from "@/hooks/recurring/useAddGoal";
 import useEditGoal from "@/hooks/recurring/useEditGoal";
 import useDeleteGoal from "@/hooks/recurring/useDeleteGoal";
 import useContributeGoal from "@/hooks/recurring/useContributeGoal";
+import useGetSubscriptions from "@/hooks/recurring/useGetSubscriptions";
+import useAddSubscription from "@/hooks/recurring/useAddSubscription";
+import useEditSubscription from "@/hooks/recurring/useEditSubscription";
+import useDeleteSubscription from "@/hooks/recurring/useDeleteSubscription";
+import usePaySubscription from "@/hooks/recurring/usePaySubscription";
 import { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import useGetUserIdFromLocalStorage from "@/hooks/others/useGetUserIdFromLocalStorage ";
 import validateBudget from "@/utils/budget/validateBudget";
 import useEditBudget from "@/hooks/recurring/useEditBudget";
+import useParamsControllers from "@/hooks/others/useParamsControllers";
 
 const RecurringPage = () => {
+  const { getParam } = useParamsControllers();
   const accessToken = localStorage.getItem("accessToken") || "";
   const user_id = useGetUserIdFromLocalStorage();
+
+  const pageParams = parseInt(getParam("page")) || 1;
+  const limitPageParams = parseInt(getParam("limit")) || 10;
+
+  // loading states
   const [isLoadingBudget, setIsLoadingBudget] = useState(false);
   const [isLoadingGoal, setIsLoadingGoal] = useState(false);
+  const [isLoadingSubscription, setIsLoadingSubscription] = useState(false);
+
+  // form error states
   const [errorFormBudget, setErrorFormBudget] = useState({ isValidate: true, budget: "", categories: {} });
   const [errorFormGoal, setErrorFormGoal] = useState({ isValidate: true, title: "", targetGoal: "" });
+
+  // success states
   const [successAddBudget, setSuccessAddBudget] = useState(false);
   const [successEditBudget, setSuccessEditBudget] = useState(false);
   const [successAddGoal, setSuccessAddGoal] = useState(false);
@@ -31,6 +48,11 @@ const RecurringPage = () => {
     setIsLoadingBudget(loadingState);
   };
 
+  const handleLoadingSubscription = (loadingState) => {
+    setIsLoadingSubscription(loadingState);
+  };
+
+  // budget hooks
   const { isError: isErrorGetBudget, error: errorGetBudget, data: dataGetBudget, isLoading: isLoadingGetBudget } = useGetBudget({ accessToken });
   const { isError: isErrorAddBudget, error: errorAddBudget, data: dataAddBudget, mutate: mutateAddBudget } = useAddBudget({ handleLoading });
   const { isError: isErrorEditBudget, error: errorEditBudget, data: dataEditBudget, mutate: mutateEditBudget } = useEditBudget({ handleLoading });
@@ -40,6 +62,14 @@ const RecurringPage = () => {
   const { isError: isErrorDeleteGoal, error: errorDeleteGoal, data: dataDeleteGoal, mutate: mutateDeleteGoal } = useDeleteGoal({ handleLoading: (s) => setIsLoadingGoal(s) });
   const { isError: isErrorContributeGoal, error: errorContributeGoal, data: dataContributeGoal, mutate: mutateContributeGoal } = useContributeGoal({ handleLoading: (s) => setIsLoadingGoal(s) });
 
+  // subscription hooks
+  const { isError: isErrorGetSubscriptions, error: errorGetSubscriptions, data: dataGetSubscriptions, isLoading: isLoadingGetSubscriptions } = useGetSubscriptions({ accessToken, page: pageParams, limit: limitPageParams });
+  const { isError: isErrorAddSubscription, error: errorAddSubscription, data: dataAddSubscription, mutate: mutateAddSubscription } = useAddSubscription({ handleLoading: handleLoadingSubscription });
+  const { isError: isErrorEditSubscription, error: errorEditSubscription, data: dataEditSubscription, mutate: mutateEditSubscription } = useEditSubscription({ handleLoading: handleLoadingSubscription });
+  const { isError: isErrorDeleteSubscription, error: errorDeleteSubscription, data: dataDeleteSubscription, mutate: mutateDeleteSubscription } = useDeleteSubscription({ handleLoading: handleLoadingSubscription });
+  const { isError: isErrorPaySubscription, error: errorPaySubscription, data: dataPaySubscription, mutate: mutatePaySubscription } = usePaySubscription({ handleLoading: handleLoadingSubscription });
+
+  // handlers submit badget and goal
   const handleSubmitBudget = (e, totalBudget, formBudget, status) => {
     e.preventDefault();
     if (!formBudget || !totalBudget) return;
@@ -59,6 +89,7 @@ const RecurringPage = () => {
     }
   };
 
+  // goal submit handler
   const handleSubmitGoal = (e, formGoal, status) => {
     e.preventDefault();
     if (!formGoal) return;
@@ -79,6 +110,29 @@ const RecurringPage = () => {
     }
   };
 
+  // subscription submit handler
+  const handleSubmitSubscription = (e, formSubcription, status, idSubscription) => {
+    e.preventDefault();
+
+    if (!formSubcription) return;
+
+    const dataTransactions = {
+      user_id,
+      title: formSubcription.title,
+      amount: String(formSubcription.amount),
+      interval: formSubcription.interval,
+      paymentMethod: formSubcription.paymentMethod,
+      date: formSubcription.date,
+      status: formSubcription.status,
+    };
+
+    if (status === "edit") {
+      mutateEditSubscription({ dataTransactions, idSubscription });
+    } else {
+      mutateAddSubscription({ dataTransactions });
+    }
+  };
+
   // if success add budget sooner
   useEffect(() => {
     if (dataAddBudget) {
@@ -87,25 +141,12 @@ const RecurringPage = () => {
     }
   }, [dataAddBudget]);
 
-  useEffect(() => {
-    if (dataAddGoal) {
-      setSuccessAddGoal(true);
-      toast.success("Goal added successfully.");
-    }
-  }, [dataAddGoal]);
-
   // if error add budget sooner
   useEffect(() => {
     if (isErrorAddBudget) {
       toast.error("Failed to add budget. Please try again.");
     }
   }, [isErrorAddBudget]);
-
-  useEffect(() => {
-    if (isErrorAddGoal) {
-      toast.error("Failed to add goal. Please try again.");
-    }
-  }, [isErrorAddGoal]);
 
   // if success edit budget sooner
   useEffect(() => {
@@ -115,13 +156,6 @@ const RecurringPage = () => {
     }
   }, [dataEditBudget]);
 
-  useEffect(() => {
-    if (dataEditGoal) {
-      setSuccessEditGoal(true);
-      toast.success("Goal edited successfully.");
-    }
-  }, [dataEditGoal]);
-
   // if error edit budget sooner
   useEffect(() => {
     if (isErrorEditBudget) {
@@ -129,6 +163,62 @@ const RecurringPage = () => {
     }
   }, [isErrorEditBudget]);
 
+  // if success add goal sooner
+  useEffect(() => {
+    if (dataAddGoal) {
+      setSuccessAddGoal(true);
+      toast.success("Goal added successfully.");
+    }
+  }, [dataAddGoal]);
+
+  // subscription success handlers
+  useEffect(() => {
+    if (dataAddSubscription) {
+      toast.success("Subscription added successfully.");
+    }
+  }, [dataAddSubscription]);
+
+  useEffect(() => {
+    if (dataEditSubscription) {
+      toast.success("Subscription edited successfully.");
+    }
+  }, [dataEditSubscription]);
+
+  useEffect(() => {
+    if (dataDeleteSubscription) {
+      toast.success("Subscription canceled.");
+    }
+  }, [dataDeleteSubscription]);
+
+  useEffect(() => {
+    if (dataPaySubscription) {
+      toast.success("Subscription payment successful.");
+    }
+  }, [dataPaySubscription]);
+
+  // subscription error handlers
+  useEffect(() => {
+    if (isErrorAddSubscription || isErrorEditSubscription || isErrorDeleteSubscription || isErrorPaySubscription) {
+      toast.error("Subscription action failed. Please try again.");
+    }
+  }, [isErrorAddSubscription, isErrorEditSubscription, isErrorDeleteSubscription, isErrorPaySubscription]);
+
+  // if error add goal sooner
+  useEffect(() => {
+    if (isErrorAddGoal) {
+      toast.error("Failed to add goal. Please try again.");
+    }
+  }, [isErrorAddGoal]);
+
+  // if success edit goal sooner
+  useEffect(() => {
+    if (dataEditGoal) {
+      setSuccessEditGoal(true);
+      toast.success("Goal edited successfully.");
+    }
+  }, [dataEditGoal]);
+
+  // if error edit goal sooner
   useEffect(() => {
     if (isErrorEditGoal) {
       toast.error("Failed to edit goal. Please try again.");
@@ -142,28 +232,33 @@ const RecurringPage = () => {
     }
   }, [dataDeleteGoal]);
 
+  // if contribute goal sooner
   useEffect(() => {
     if (dataContributeGoal) {
       toast.success("Contributed to goal successfully.");
     }
   }, [dataContributeGoal]);
 
+  // if error delete goal sooner
   useEffect(() => {
     if (isErrorDeleteGoal) {
       toast.error("Failed to delete goal. Please try again.");
     }
   }, [isErrorDeleteGoal]);
 
+  // if error contribute goal sooner
   useEffect(() => {
     if (isErrorContributeGoal) {
       toast.error("Failed to contribute to goal. Please try again.");
     }
   }, [isErrorContributeGoal]);
 
+  // delete goal handler
   const handleDeleteGoal = () => {
     mutateDeleteGoal({ dataTransactions: { user_id } });
   };
 
+  // contribute goal handler
   const handleSubmitContribute = (e, amount) => {
     e.preventDefault();
     if (!amount || !amount.toString().trim()) return setErrorFormContribute({ isValidate: false, amount: "Amount is required" });
@@ -177,8 +272,8 @@ const RecurringPage = () => {
     <div>
       <NavigationComponent />
       <MainComponent
+        // budget props
         isErrorGetBudget={isErrorGetBudget}
-        errorGetBudget={errorGetBudget}
         dataGetBudget={dataGetBudget}
         isLoading={isLoadingGetBudget}
         isLoadingBudget={isLoadingBudget}
@@ -188,19 +283,27 @@ const RecurringPage = () => {
         successEditBudget={successEditBudget}
         // goal props
         isErrorGetGoal={isErrorGetGoal}
-        errorGetGoal={errorGetGoal}
         dataGetGoal={dataGetGoal}
         isLoadingGetGoal={isLoadingGetGoal}
         isLoadingGoal={isLoadingGoal}
         handleSubmitGoal={handleSubmitGoal}
         errorFormGoal={errorFormGoal}
+        // contribution props
         successAddGoal={successAddGoal}
         successEditGoal={successEditGoal}
         handleDeleteGoal={handleDeleteGoal}
         handleSubmitContribute={handleSubmitContribute}
         errorFormContribute={errorFormContribute}
+        // subscription props
+        isErrorGetSubscriptions={isErrorGetSubscriptions}
+        dataGetSubscriptions={dataGetSubscriptions}
+        isLoadingGetSubscriptions={isLoadingGetSubscriptions}
+        mutatePaySubscription={mutatePaySubscription}
+        mutateDeleteSubscription={mutateDeleteSubscription}
+        handleSubmitSubscription={handleSubmitSubscription}
+        isLoadingSubscription={isLoadingSubscription}
       />
-      <Toaster position="top-center" richColors />;
+      <Toaster position="top-center" richColors />
     </div>
   );
 };

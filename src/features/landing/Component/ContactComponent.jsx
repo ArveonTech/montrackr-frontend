@@ -1,6 +1,3 @@
-// components
-import { Contact } from "lucide-react";
-
 const ContactComponent = () => {
   return (
     <section id="contact" className="py-16 px-6" data-aos="fade-up" data-aos-duration="1300">

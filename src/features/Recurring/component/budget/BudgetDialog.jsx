@@ -82,10 +82,10 @@ const BudgetDialog = ({ openBudget, setOpenBudget, onClose, isLoadingBudget, han
                 <Label>Total Monthly Budget</Label>
                 <div className="flex items-center gap-2">
                   <p className="bg-accent p-1 rounded">Rp </p>
-                  <Input placeholder="5.000.000" value={formatRupiah(totalBudget)} onChange={handleChangeTotalBudget} />
+                  <Input placeholder="5.000.000" value={formatRupiah(totalBudget)} onChange={handleChangeTotalBudget} autoComplete="off"/>
                 </div>
-                <Activity mode={!errorFormBudget.isValidate && errorFormBudget.budget ? "visible" : "hidden"}>
-                  <p className="text-sm mt-1 text-red-500">{errorFormBudget.budget}</p>
+                <Activity mode={!errorFormBudget?.isValidate && errorFormBudget?.budget ? "visible" : "hidden"}>
+                  <p className="text-sm mt-1 text-red-500">{errorFormBudget?.budget}</p>
                 </Activity>
               </div>
 
@@ -99,10 +99,10 @@ const BudgetDialog = ({ openBudget, setOpenBudget, onClose, isLoadingBudget, han
                       <Label className="w-28 text-sm text-muted-foreground">{category.label}</Label>
                       <div className="flex items-center gap-2">
                         <p className="bg-accent p-1 rounded">Rp </p>
-                        <Input name={category.value} value={formatRupiah(formBudget[category.value])} placeholder="0" className={`placeholder:opacity-80`} onChange={handleChange} />
+                        <Input name={category.value} value={formatRupiah(formBudget[category.value])} placeholder="0" className={`placeholder:opacity-80`} onChange={handleChange} autoComplete="off" />
                       </div>
-                      <Activity mode={!errorFormBudget.isValidate && errorFormBudget.categories[category.value] ? "visible" : "hidden"}>
-                        <p className="text-sm mt-1 text-red-500">{errorFormBudget.categories[category.value]}</p>
+                      <Activity mode={!errorFormBudget?.isValidate && errorFormBudget?.categories[category.value] ? "visible" : "hidden"}>
+                        <p className="text-sm mt-1 text-red-500">{errorFormBudget?.categories[category.value]}</p>
                       </Activity>
                     </div>
                   ))}

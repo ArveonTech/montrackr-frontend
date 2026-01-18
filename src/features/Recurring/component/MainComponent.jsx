@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Activity, useEffect, useState } from "react";
 import BudgetMoneySection from "./budget/budget-money-section";
 import CategorySection from "@/features/Recurring/component/budget/CategorySection";
 import SomethingWentWrong from "@/features/others/SomethingWentWrong";
@@ -9,10 +9,15 @@ import ContributeGoalDialog from "./goals/ContributeGoalDialog";
 import AddBudgetCard from "./budget/AddBudgetCard";
 import BudgetDialog from "./budget/BudgetDialog";
 import Loading from "@/features/others/Loading";
+import { Plus } from "lucide-react";
+import CardComponent from "./subscription/CardComponent";
+import FormSubscription from "./subscription/FormSubscription";
+import { cn } from "@/lib/utils";
+import FooterComponent from "./subscription/FooterComponent";
 
 const MainComponent = ({
+  // budget props
   isErrorGetBudget,
-  errorGetBudget,
   dataGetBudget,
   isLoading,
   isLoadingBudget,
@@ -22,7 +27,6 @@ const MainComponent = ({
   successEditBudget,
   // goal props
   isErrorGetGoal,
-  errorGetGoal,
   dataGetGoal,
   isLoadingGetGoal,
   isLoadingGoal,
@@ -34,8 +38,16 @@ const MainComponent = ({
   successAddGoal,
   successEditGoal,
   handleDeleteGoal,
+  // subscription props
+  isErrorGetSubscriptions,
+  dataGetSubscriptions,
+  isLoadingGetSubscriptions,
+  mutatePaySubscription,
+  mutateDeleteSubscription,
+  handleSubmitSubscription,
+  isLoadingSubscription,
 }) => {
-  const [activeTab, setActiveTab] = useState("budget");
+  const [activeTab, setActiveTab] = useState("subscriptions");
 
   // State for budget and expenses
   const [monthExpense, setMonthExpense] = useState(0);
@@ -56,6 +68,9 @@ const MainComponent = ({
   const [openGoal, setOpenGoal] = useState(false);
   const [openContribute, setOpenContribute] = useState(false);
   const [goalData, setGoalData] = useState(null);
+
+  // state for subscribing goal
+  const [openSubscription, setOpenSubscription] = useState(false);
 
   // Update state when dataGetBudget changes
   useEffect(() => {
@@ -80,7 +95,7 @@ const MainComponent = ({
           "family & social": 0,
           financial: 0,
           others: 0,
-        }
+        },
       );
     }
   }, [dataGetBudget]);
@@ -98,16 +113,14 @@ const MainComponent = ({
     }
   }, [dataGetGoal]);
 
+  // open budget dialogs handlers
   const handleOpenAddBudget = () => {
     setOpenBudget(true);
   };
 
+  // open goal dialog handler
   const handleOpenAddGoal = () => {
     setOpenGoal(true);
-  };
-
-  const handleOpenContribute = () => {
-    setOpenContribute(true);
   };
 
   // Close budget dialog when budget is successfully added or edited
@@ -133,6 +146,7 @@ const MainComponent = ({
     }
   }, [successEditGoal]);
 
+  // close contribute dialog when contributed
   useEffect(() => {
     if (successAddGoal) {
       setOpenContribute(false);
@@ -140,95 +154,141 @@ const MainComponent = ({
   }, [successAddGoal]);
 
   return (
-    <main className="mx-10 mt-20">
-      <header className="flex gap-4 relative">
-        <h4 className="mx-2.5 mt-0.5 cursor-pointer" onClick={() => setActiveTab("budget")}>
-          Budget
-        </h4>
-        <h4 className="mt-0.5 cursor-pointer" onClick={() => setActiveTab("subscription")}>
-          Subscription
-        </h4>
-        <div className={`border border-b-0 h-6.5 rounded-t-lg absolute transition-all duration-700 ${activeTab === "subscription" ? "translate-x-22 w-30" : "translate-x-0 w-20"}`}></div>
+    <div className={cn(`mx-10 mt-20`)}>
+      <header className="flex justify-between items-center">
+        <div className="flex gap-4">
+          <h4 className={cn(`cursor-pointer p-2`, activeTab === "budget" && "bg-primary text-primary-foreground rounded")} onClick={() => setActiveTab("budget")}>
+            Budget
+          </h4>
+          <h4 className={cn(`cursor-pointer p-2`, activeTab === "subscriptions" && "bg-primary text-primary-foreground rounded")} onClick={() => setActiveTab("subscriptions")}>
+            Subscription
+          </h4>
+        </div>
+        <Activity mode={activeTab === "subscriptions" ? "visible" : "hidden"}>
+          <div className="flex items-center gap-2 bg-primary rounded px-4 h-fit my-auto py-1 cursor-pointer" onClick={() => setOpenSubscription(true)}>
+            <Plus />
+            ADD
+          </div>
+        </Activity>
       </header>
 
-      {openBudget && <BudgetDialog openBudget={openBudget} setOpenBudget={setOpenBudget} onClose={() => setOpenBudget(false)} isLoadingBudget={isLoadingBudget} handleSubmitBudget={handleSubmitBudget} errorFormBudget={errorFormBudget} />}
+      <main className={cn(activeTab === "subscription" ? "rounded-t-lg" : "")}>
+        {openBudget && <BudgetDialog openBudget={openBudget} setOpenBudget={setOpenBudget} onClose={() => setOpenBudget(false)} isLoadingBudget={isLoadingBudget} handleSubmitBudget={handleSubmitBudget} errorFormBudget={errorFormBudget} />}
 
-      <section className={`border transition-all duration-700 ${activeTab === "subscription" ? "rounded-t-lg" : ""}`}>
-        {activeTab === "budget" ? (
-          <div className="p-4">
-            {isErrorGetBudget ? (
-              <SomethingWentWrong />
-            ) : (
-              <div className="p-4 grid lg:grid-cols-3">
-                <div className="lg:col-span-2 space-y-8">
-                  {isBudgetEmpty ? (
-                    <AddBudgetCard onClick={handleOpenAddBudget} />
-                  ) : isLoading ? (
-                    <Loading />
-                  ) : (
-                    <>
-                      <BudgetMoneySection amount={monthExpense} budget={budget} />
-                      <CategorySection
-                        categoryBudget={categoryBudget}
-                        dataEditBudget={dataGetBudget}
-                        errorFormBudget={errorFormBudget}
-                        handleSubmitBudget={handleSubmitBudget}
-                        isLoadingBudget={isLoadingBudget}
-                        successEditBudget={successEditBudget}
+        {openSubscription && <FormSubscription openSubcription={openSubscription} setOpenSubcription={setOpenSubscription} handleSubmitSubscription={handleSubmitSubscription} onClose={() => setOpenSubscription(false)} />}
+
+        <section className={cn()}>
+          {activeTab === "budget" ? (
+            <div className="p-4">
+              {isErrorGetBudget ? (
+                <SomethingWentWrong />
+              ) : (
+                <div className="p-4 grid lg:grid-cols-3">
+                  <div className="lg:col-span-2 space-y-8">
+                    {isBudgetEmpty ? (
+                      <AddBudgetCard onClick={handleOpenAddBudget} />
+                    ) : isLoading ? (
+                      <Loading />
+                    ) : (
+                      <>
+                        <BudgetMoneySection amount={monthExpense} budget={budget} />
+                        <CategorySection
+                          categoryBudget={categoryBudget}
+                          dataEditBudget={dataGetBudget}
+                          errorFormBudget={errorFormBudget}
+                          handleSubmitBudget={handleSubmitBudget}
+                          isLoadingBudget={isLoadingBudget}
+                          successEditBudget={successEditBudget}
+                        />
+                      </>
+                    )}
+                  </div>
+
+                  <div className="lg:col-span-1 mx-auto mt-20 lg:my-auto">
+                    {isErrorGetGoal ? (
+                      <SomethingWentWrong />
+                    ) : isGoalEmpty ? (
+                      <AddGoalCard onClick={handleOpenAddGoal} />
+                    ) : isLoadingGetGoal ? (
+                      <Loading />
+                    ) : (
+                      <GoalsCard
+                        title={goalData?.title}
+                        currentAmount={goalData?.currentBalance || 0}
+                        goalAmount={goalData?.targetGoal || 0}
+                        onEdit={() => setOpenGoal(true)}
+                        onDelete={handleDeleteGoal}
+                        onContribute={() => setOpenContribute(true)}
                       />
-                    </>
-                  )}
+                    )}
+
+                    {openGoal && (
+                      <GoalDialog
+                        openGoal={openGoal}
+                        setOpenGoal={setOpenGoal}
+                        onClose={() => setOpenGoal(false)}
+                        isLoadingGoal={isLoadingGoal}
+                        handleSubmitGoal={handleSubmitGoal}
+                        errorFormGoal={errorFormGoal}
+                        dataEditGoal={goalData ? dataGetGoal : null}
+                      />
+                    )}
+
+                    {openContribute && (
+                      <ContributeGoalDialog
+                        openContribute={openContribute}
+                        setOpenContribute={setOpenContribute}
+                        onClose={() => setOpenContribute(false)}
+                        isLoadingContribute={isLoadingGoal}
+                        handleSubmitContribute={handleSubmitContribute}
+                        errorFormContribute={errorFormContribute}
+                      />
+                    )}
+                  </div>
                 </div>
+              )}
+            </div>
+          ) : (
+            <div className="p-4 mb-10">
+              {isErrorGetSubscriptions ? (
+                <SomethingWentWrong />
+              ) : isLoadingGetSubscriptions ? (
+                <Loading />
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 ">
+                  {(dataGetSubscriptions?.data?.items || [])
+                    .slice()
+                    .sort((a, b) => {
+                      if (a.status === "canceled" && b.status !== "canceled") return 1;
+                      if (a.status !== "canceled" && b.status === "canceled") return -1;
 
-                <div className="lg:col-span-1 mx-auto mt-20 lg:my-auto">
-                  {isErrorGetGoal ? (
-                    <SomethingWentWrong />
-                  ) : isGoalEmpty ? (
-                    <AddGoalCard onClick={handleOpenAddGoal} />
-                  ) : isLoadingGetGoal ? (
-                    <Loading />
-                  ) : (
-                    <GoalsCard
-                      title={goalData?.title}
-                      currentAmount={goalData?.currentBalance || 0}
-                      goalAmount={goalData?.targetGoal || 0}
-                      onEdit={() => setOpenGoal(true)}
-                      onDelete={handleDeleteGoal}
-                      onContribute={() => setOpenContribute(true)}
-                    />
-                  )}
+                      const today = new Date();
+                      const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                      const da = new Date(a.nextPayment || a.date);
+                      const db = new Date(b.nextPayment || b.date);
+                      const diffA = Math.ceil((da - startOfToday) / (1000 * 60 * 60 * 24));
+                      const diffB = Math.ceil((db - startOfToday) / (1000 * 60 * 60 * 24));
 
-                  {openGoal && (
-                    <GoalDialog
-                      openGoal={openGoal}
-                      setOpenGoal={setOpenGoal}
-                      onClose={() => setOpenGoal(false)}
-                      isLoadingGoal={isLoadingGoal}
-                      handleSubmitGoal={handleSubmitGoal}
-                      errorFormGoal={errorFormGoal}
-                      dataEditGoal={goalData ? dataGetGoal : null}
-                    />
-                  )}
-
-                  {openContribute && (
-                    <ContributeGoalDialog
-                      openContribute={openContribute}
-                      setOpenContribute={setOpenContribute}
-                      onClose={() => setOpenContribute(false)}
-                      isLoadingContribute={isLoadingGoal}
-                      handleSubmitContribute={handleSubmitContribute}
-                      errorFormContribute={errorFormContribute}
-                    />
-                  )}
+                      return diffA - diffB;
+                    })
+                    .map((item) => (
+                      <CardComponent
+                        key={item._id}
+                        item={item}
+                        mutatePaySubscription={mutatePaySubscription}
+                        mutateDeleteSubscription={mutateDeleteSubscription}
+                        isLoadingDelete={isLoadingSubscription}
+                        handleSubmitSubscription={handleSubmitSubscription}
+                      />
+                    ))}
                 </div>
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className="p-4">Subscription Content</div>
-        )}
-      </section>
-    </main>
+              )}
+            </div>
+          )}
+        </section>
+        {activeTab === "subscriptions" && <FooterComponent data={dataGetSubscriptions} error={isErrorGetSubscriptions} />}
+      </main>
+    </div>
   );
 };
 

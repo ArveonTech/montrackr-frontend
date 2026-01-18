@@ -189,7 +189,7 @@ const FormTransactions = ({ onClose, dataEditTransactions }) => {
             <Label>Amount</Label>
             <div className="flex items-center gap-2">
               <p className="bg-accent p-1 rounded">Rp </p>
-              <Input name="amount" type="text" value={formatRupiah(form.amount)} onChange={handleChange} placeholder="5.000.000" />
+              <Input name="amount" type="text" value={formatRupiah(form.amount)} onChange={handleChange} placeholder="5.000.000" autoComplete="off" />
             </div>
             <Activity mode={errorform.isValid === false && errorform.errors?.amount ? "visible" : "hidden"}>
               <p className=" text-sm mb-5 text-red-500">*{errorform.errors?.amount}</p>

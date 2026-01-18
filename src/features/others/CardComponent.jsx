@@ -33,7 +33,7 @@ const CardComponent = ({ item, className, isLoadingDelete, handleDeleteTransacti
           className={cn(
             "h-28 px-5 bg-card text-card-foreground flex flex-col rounded-xl border py-4 shadow-sm justify-between cursor-pointer",
             item?.type === "income" ? "bg-primary/10 text-primary-foreground" : item?.type === "expense" ? "bg-destructive/95 text-destructive-foreground" : "bg-accent/95 text-accent-foreground",
-            className
+            className,
           )}
         >
           <div className="flex justify-between gap-2">
@@ -52,7 +52,7 @@ const CardComponent = ({ item, className, isLoadingDelete, handleDeleteTransacti
           </div>
 
           <p className="font-JetBrains text-[17px] lg:text-md">
-            {item.type === "income" ? "+" : "-"}Rp {Number(item?.amount).toLocaleString("id-ID")}
+            {item.type === "income" ? "+" : item?.type === "expense" ? "-" : ""}Rp {Number(item?.amount).toLocaleString("id-ID")}
           </p>
         </div>
       </AlertDialogTrigger>
@@ -72,14 +72,20 @@ const CardComponent = ({ item, className, isLoadingDelete, handleDeleteTransacti
             <div className="flex justify-between">
               {item.type !== "goal" && (
                 <div className="space-x-2">
-                  <Button className={`cursor-pointer`} onClick={() => handleEdit(item)}>
-                    Edit
-                  </Button>
-                  <AlertDialogAction asChild>
-                    <Button variant="destructive" className={`cursor-pointer`} onClick={() => handleDeleteTransactions(item._id)}>
-                      Delete
-                    </Button>
-                  </AlertDialogAction>
+                  {!item.goalId ||
+                    (!item.subsId && (
+                      <Button className={`cursor-pointer`} onClick={() => handleEdit(item)}>
+                        Edit
+                      </Button>
+                    ))}
+                  {!item.goalId ||
+                    (!item.subsId && (
+                      <AlertDialogAction asChild>
+                        <Button variant="destructive" className={`cursor-pointer`} onClick={() => handleDeleteTransactions(item._id)}>
+                          Delete
+                        </Button>
+                      </AlertDialogAction>
+                    ))}
                 </div>
               )}
               <AlertDialogCancel className={`cursor-pointer`}>Cancel</AlertDialogCancel>

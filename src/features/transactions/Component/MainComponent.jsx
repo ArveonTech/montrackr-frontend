@@ -25,7 +25,7 @@ const MainComponent = ({ data }) => {
 
   useEffect(() => {
     if (statusEditTransactions.status === true) setEditTrue(false);
-  });
+  }, [statusEditTransactions]);
 
   return (
     <>
