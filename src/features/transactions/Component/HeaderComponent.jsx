@@ -111,7 +111,7 @@ const HeaderComponent = () => {
   };
 
   return (
-    <div className="mt-20 mx-10">
+    <header className="mt-20 mx-10">
       <div className="mx-auto lg:hidden">
         <Input placeholder="Search" className="placeholder:italic placeholder:opacity-80 ring-1" value={searchInput} onInput={(e) => setSearchInput(e.target.value)} />
       </div>
@@ -200,7 +200,7 @@ const HeaderComponent = () => {
           </div>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 

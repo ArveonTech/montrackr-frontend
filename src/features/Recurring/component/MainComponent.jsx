@@ -154,13 +154,13 @@ const MainComponent = ({
   }, [successAddGoal]);
 
   return (
-    <div className={cn(`mx-10 mt-20`)}>
+    <div className={cn(`mx-5 md:mx-10 mt-20`)}>
       <header className="flex justify-between items-center">
-        <div className="flex gap-4">
-          <h4 className={cn(`cursor-pointer p-2`, activeTab === "budget" && "bg-primary text-primary-foreground rounded")} onClick={() => setActiveTab("budget")}>
+        <div className="flex md:gap-4">
+          <h4 className={cn(`cursor-pointer p-1.5 md:p-2`, activeTab === "budget" && "bg-primary text-primary-foreground rounded")} onClick={() => setActiveTab("budget")}>
             Budget
           </h4>
-          <h4 className={cn(`cursor-pointer p-2`, activeTab === "subscriptions" && "bg-primary text-primary-foreground rounded")} onClick={() => setActiveTab("subscriptions")}>
+          <h4 className={cn(`cursor-pointer p-1.5 md:p-2`, activeTab === "subscriptions" && "bg-primary text-primary-foreground rounded")} onClick={() => setActiveTab("subscriptions")}>
             Subscription
           </h4>
         </div>

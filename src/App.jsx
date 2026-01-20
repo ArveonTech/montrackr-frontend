@@ -16,6 +16,7 @@ import SetPasswordForgotPasswordPage from "./pages/auth/forgot-password/SetPassw
 import DashboardPage from "./pages/dashboard/DashboardPage";
 import TransactionsPage from "./pages/transactions/TransactionsPage";
 import RecurringPage from "./pages/Recurring/RecurringPage";
+import AnalyticsPage from "./pages/analytics/AnalyticsPage";
 
 const queryClient = new QueryClient();
 
@@ -121,6 +122,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <RecurringPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/analytics",
+    element: (
+      <ProtectedRoute>
+        <AnalyticsPage />
       </ProtectedRoute>
     ),
   },

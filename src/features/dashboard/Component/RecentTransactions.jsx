@@ -10,7 +10,7 @@ const RecentTransactions = ({ dataTransactions, isLoading }) => {
       {isLoading && <SkeletonCard />}
 
       {/* DATA */}
-      {!isLoading && dataTransactions?.length > 0 ? dataTransactions?.map((item, index) => <CardComponent item={item} key={index} className={`w-96 max-w-md lg:w-full `} />) : <RecentTransactionsEmpty />}
+      {!isLoading && dataTransactions?.length > 0 ? dataTransactions?.map((item, index) => <CardComponent item={item} key={index} className={`w-80 max-w-md lg:w-full `} />) : <RecentTransactionsEmpty />}
     </div>
   );
 };

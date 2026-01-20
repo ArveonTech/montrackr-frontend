@@ -27,7 +27,7 @@ const NavigationComponent = () => {
   }, []);
 
   return (
-    <nav className="bg-sidebar h-16 px-10 flex justify-between items-center sticky top-0 z-10 mt-5">
+    <nav className="bg-sidebar h-16 px-10 flex justify-between items-center sticky top-0 z-10">
       <div className="flex items-center gap-3">
         <img src="./iconsWeb.jpg" className="w-6" />
         <h1 className="font-JetBrains text-xl">
