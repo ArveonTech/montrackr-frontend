@@ -2,36 +2,21 @@ import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import getXAxisDataKey from "@/hooks/analytics/getXAxisDataKey";
 
-const ChartAnalytics = ({ dataAnalytics, type }) => {
-  let chartConfig = null;
+const ChartAnalytics = ({ dataAnalytics, type, startRange, endRange }) => {
+  let chartConfig = {
+    income: {
+      label: "Income",
+      color: "var(--chart-1)",
+    },
+    expense: {
+      label: "Expense",
+      color: "#ca3214",
+    },
+  };
 
-  if (type === "income") {
-    chartConfig = {
-      income: {
-        label: "Income",
-        color: "var(--chart-1)",
-      },
-    };
-  } else if (type === "expense") {
-    chartConfig = {
-      expense: {
-        label: "Expense",
-        color: "#ca3214",
-      },
-    };
-  } else {
-    chartConfig = {
-      income: {
-        label: "Income",
-        color: "var(--chart-1)",
-      },
-      expense: {
-        label: "Expense",
-        color: "#ca3214",
-      },
-    };
-  }
+  const datakey = getXAxisDataKey(((startRange = { startRange }), (endRange = { endRange })));
 
   return (
     <>
@@ -46,8 +31,8 @@ const ChartAnalytics = ({ dataAnalytics, type }) => {
             <ChartContainer config={chartConfig} className="h-full w-full">
               <AreaChart data={dataAnalytics} margin={{ left: 12, right: 12 }}>
                 <CartesianGrid vertical={false} />
-                <XAxis dataKey="day" tickLine={false} axisLine={false} tickMargin={8} />
-                <ChartTooltip cursor={false} content={<ChartTooltipContent labelFormatter={(_, payload) => `Day ${payload?.[0]?.payload?.day}`} />} />
+                <XAxis dataKey={datakey} tickLine={false} axisLine={false} tickMargin={8} />
+                <ChartTooltip cursor={false} content={<ChartTooltipContent labelFormatter={(_, payload) => `${datakey} ${payload?.[0]?.payload?.[datakey]}`} />} />
 
                 <defs>
                   <linearGradient id="fillIncome" x1="0" y1="0" x2="0" y2="1">
@@ -60,16 +45,9 @@ const ChartAnalytics = ({ dataAnalytics, type }) => {
                   </linearGradient>
                 </defs>
 
-                {type === "income" ? (
-                  <Area dataKey="income" type="monotone" fill="url(#fillIncome)" stroke="var(--chart-1)" fillOpacity={0.4} />
-                ) : type === "expense" ? (
-                  <Area dataKey="expense" type="monotone" fill="url(#fillExpense)" stroke="#ca3214" fillOpacity={0.4} />
-                ) : (
-                  <>
-                    <Area dataKey="income" type="monotone" fill="url(#fillIncome)" stroke="var(--chart-1)" fillOpacity={0.4} />
-                    <Area dataKey="expense" type="monotone" fill="url(#fillExpense)" stroke="#ca3214" fillOpacity={0.4} />
-                  </>
-                )}
+                {(type === "income" || type === "") && <Area dataKey="income" type="monotone" fill="url(#fillIncome)" stroke="var(--chart-1)" fillOpacity={0.4} />}
+
+                {(type === "expense" || type === "") && <Area dataKey="expense" type="monotone" fill="url(#fillExpense)" stroke="#ca3214" fillOpacity={0.4} />}
 
                 <ChartLegend content={<ChartLegendContent />} />
               </AreaChart>

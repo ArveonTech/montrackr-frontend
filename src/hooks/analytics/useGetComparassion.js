@@ -8,8 +8,8 @@ const useGetComparassion = ({ handleLoading } = {}) => {
     onMutate: () => {
       handleLoading(true);
     },
-    mutationFn: ({ dataTransactions }) => {
-      return apiRequest("POST", "analytics/comparassion", { dataTransactions }, ``, {
+    mutationFn: ({ dataTransactions, period }) => {
+      return apiRequest("POST", "analytics/comparassion", { dataTransactions }, `period=${period}`, {
         headers: {
           "Content-Type": "application/json",
         },
