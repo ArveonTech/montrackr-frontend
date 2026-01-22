@@ -16,7 +16,7 @@ const MonthComparassion = ({ dataComparassion, period }) => {
   const { setParam } = useParamsControllers();
 
   return (
-    <section className="shadow w-fit h-fit p-4 mx-auto rounded">
+    <section className="shadow w-fit h-fit p-4 mx-auto lg:mx-0 rounded">
       <header className="flex bg-card items-center gap-4 mb-2">
         <h1 className="capitalize">{period} Comparassion</h1>
         <Select

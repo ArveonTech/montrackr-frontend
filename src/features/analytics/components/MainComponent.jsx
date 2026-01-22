@@ -82,8 +82,6 @@ const MainComponent = ({ responseDataAnalytics, loadingGetData, isErrorGetDataAn
     expense: expenseCategory,
   };
 
-  console.info(responseDataAnalytics?.data?.resultCategory);
-
   return (
     <main className="mx-10">
       {loadingGetData ? (
@@ -101,15 +99,16 @@ const MainComponent = ({ responseDataAnalytics, loadingGetData, isErrorGetDataAn
               <div className="mt-10">
                 <ChartAnalytics dataAnalytics={responseDataAnalytics?.data?.resultChart} type={type} startRange={startRange} endRange={endRange} />
               </div>
-              <div className="space-y-20 md:space-y-0 md:flex my-20 items-center">
+              <div className="space-y-10 lg:space-y-0 lg:flex my-20 items-center justify-around gap-10 flex-wrap">
                 <MonthComparassion dataComparassion={responseDataComparassion?.data} period={period} />
+
                 {Object.entries(resultCategory).map(([key, value]) => {
                   if (key === "income") {
-                    return <PieChartAnalytics key={key} chartConfig={chartConfigIncome} chartData={value} />;
+                    return <PieChartAnalytics key={key} chartConfig={chartConfigIncome} chartData={value} type={"income"} startDate={startRange} endDate={endRange} />;
                   }
 
                   if (key === "expense") {
-                    return <PieChartAnalytics key={key} chartConfig={chartConfigExpense} chartData={value} />;
+                    return <PieChartAnalytics key={key} chartConfig={chartConfigExpense} chartData={value} type={"expense"} startDate={startRange} endDate={endRange} />;
                   }
 
                   return null;
