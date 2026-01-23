@@ -47,7 +47,7 @@ const MainComponent = ({
   handleSubmitSubscription,
   isLoadingSubscription,
 }) => {
-  const [activeTab, setActiveTab] = useState("subscriptions");
+  const [activeTab, setActiveTab] = useState("budget");
 
   // State for budget and expenses
   const [monthExpense, setMonthExpense] = useState(0);

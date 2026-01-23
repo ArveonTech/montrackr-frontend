@@ -17,6 +17,7 @@ import DashboardPage from "./pages/dashboard/DashboardPage";
 import TransactionsPage from "./pages/transactions/TransactionsPage";
 import RecurringPage from "./pages/Recurring/RecurringPage";
 import AnalyticsPage from "./pages/analytics/AnalyticsPage";
+import ProfilePage from "./pages/profile/ProfilePage";
 
 const queryClient = new QueryClient();
 
@@ -130,6 +131,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <AnalyticsPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/profile",
+    element: (
+      <ProtectedRoute>
+        <ProfilePage />
       </ProtectedRoute>
     ),
   },

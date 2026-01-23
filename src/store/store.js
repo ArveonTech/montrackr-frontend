@@ -7,6 +7,7 @@ import editTransactionsPageSlice from "@/features/transactions/editTransactions"
 import addBudgetSlice from "@/features/Recurring/addBudget";
 import editBudgetSlice from "@/features/Recurring/editBudget";
 import deleteBudgetSlice from "@/features/Recurring/deleteBudget";
+import changeProfileSlice from "@/features/profile/changeProfileSlice";
 
 export const store = configureStore({
   reducer: {
@@ -17,5 +18,6 @@ export const store = configureStore({
     addBudget: addBudgetSlice,
     editBudget: editBudgetSlice,
     deleteBudget: deleteBudgetSlice,
+    changeProfile: changeProfileSlice,
   },
 });
