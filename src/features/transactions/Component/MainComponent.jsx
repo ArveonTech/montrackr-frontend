@@ -47,7 +47,7 @@ const MainComponent = ({ data }) => {
             <div>
               <h4 className="mb-3">Type:</h4>
               <Select
-                value={filter.type}
+                value={filter?.type}
                 onValueChange={(value) => {
                   setFilterInputParam({ type: value, category: filter.category });
                   setFilter((prev) => ({ ...prev, type: value }));

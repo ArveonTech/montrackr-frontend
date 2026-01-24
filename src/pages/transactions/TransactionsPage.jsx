@@ -174,7 +174,7 @@ const TransactionsPage = () => {
   return (
     <div>
       <NavigationComponent />
-      <HeaderComponent />
+      <HeaderComponent typeParam={typeParam} categoryParam={categoryParam} />
       <MainComponent
         data={{ filter, typeList, typeCategory, pageMeta, loadingGetTransactions, isErrorGetTransactions, layoutParam, skeletonLoop, dataTransactions, setFilterInputParam, setFilter, isLoadingDelete, handleDeleteTransactions }}
       />

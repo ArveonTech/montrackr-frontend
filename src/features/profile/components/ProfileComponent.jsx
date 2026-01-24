@@ -1,5 +1,6 @@
 import { LogOut, Pencil } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import useGetUserIdFromLocalStorage from "@/hooks/others/useGetUserIdFromLocalStorage ";
 
 const profileImages = {
   "profile-1": "/profile/1.png",
@@ -10,7 +11,9 @@ const profileImages = {
   "profile-6": "/profile/6.png",
 };
 
-const ProfileComponent = ({ dataProfile, onEditAvatar, onEditUsername }) => {
+const ProfileComponent = ({ dataProfile, onEditAvatar, onEditUsername, mutateLogout, loadingLogout }) => {
+  const user_id = useGetUserIdFromLocalStorage();
+
   return (
     <div className="w-full bg-card rounded-xl p-4 flex items-center gap-4 shadow-sm mx-auto mt-20 overflow-hidden">
       <div className="relative shrink-0">
@@ -31,7 +34,14 @@ const ProfileComponent = ({ dataProfile, onEditAvatar, onEditUsername }) => {
           <div className="text-xs text-[#3b766f] truncate">{dataProfile?.data?.email}</div>
         </div>
 
-        <button aria-label="edit-profile" className="p-2 rounded-lg bg-white/60 hover:bg-white text-[#0f5e5a] shadow-sm shrink-0 cursor-pointer" type="button">
+        <button
+          aria-label="edit-profile"
+          className="p-2 rounded-lg bg-white/60 hover:bg-white text-[#0f5e5a] shadow-sm shrink-0 cursor-pointer"
+          type="button"
+          onClick={() => {
+            mutateLogout({ dataUser: { _id: user_id } });
+          }}
+        >
           <LogOut />
         </button>
       </div>

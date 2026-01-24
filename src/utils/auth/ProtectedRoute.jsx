@@ -13,9 +13,9 @@ const ProtectedRoute = ({ children }) => {
   const { isLoading, isError, data } = useGenerateAccessToken(accessToken);
 
   useEffect(() => {
-    const newToken = data?.tokens?.accessToken;
-    if (newToken) {
-      localStorage.setItem("access-token", newToken);
+    if (data?.tokens?.accessToken) {
+      const newToken = data?.tokens?.accessToken;
+      // localStorage.setItem("access-token", newToken);
     }
   }, [data]);
 

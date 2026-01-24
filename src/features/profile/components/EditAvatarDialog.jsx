@@ -6,7 +6,7 @@ import useUpdateProfileField from "@/hooks/profile/useUpdateProfileField";
 
 const avatars = ["profile-1", "profile-2", "profile-3", "profile-4", "profile-5", "profile-6"];
 
-const EditAvatarDialog = ({ open, onOpenChange, accessToken }) => {
+const EditAvatarDialog = ({ open, onOpenChange, accessToken, dataProfile }) => {
   const [selected, setSelected] = useState(avatars[0]);
   const [dialogLoading, setDialogLoading] = useState(false);
   const { mutate: updateProfile, isLoading } = useUpdateProfileField({ handleLoading: setDialogLoading });
@@ -32,9 +32,9 @@ const EditAvatarDialog = ({ open, onOpenChange, accessToken }) => {
         </DialogHeader>
 
         <DialogDescription></DialogDescription>
-        <div className="grid grid-cols-3  my-4">
+        <div className="grid grid-cols-3 my-4">
           {avatars.map((a) => (
-            <button key={a} type="button" onClick={() => setSelected(a)} className={`rounded-full w-fit mx-auto p-5 border ${selected === a ? "border-primary" : "border-transparent"}`}>
+            <button key={a} type="button" onClick={() => setSelected(a)} className={`rounded-full w-fit mx-auto p-5  ${selected === a ? "border border-primary" : "border-transparent"}`}>
               <img src={`/profile/${a.replace("profile-", "")}.png`} alt={a} className="w-16 h-16 object-cover rounded-full mx-auto" />
             </button>
           ))}

@@ -37,8 +37,8 @@ const DashboardPage = () => {
   // enter data profile into state
   useEffect(() => {
     if (dataGetProfile) {
-      if (dataGetProfile.tokens) {
-        localStorage.setItem("access-token", dataGetProfile.tokens);
+      if (dataGetProfile.tokens?.accessToken) {
+        localStorage.setItem("access-token", dataGetProfile.tokens.accessToken);
       }
 
       return setProfileUser(dataGetProfile.data);

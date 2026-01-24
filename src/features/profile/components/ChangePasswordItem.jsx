@@ -41,7 +41,6 @@ const ChangePasswordItem = ({ accessToken, profileData }) => {
     };
 
     changePassword({ dataUser, accessToken });
-    // keep dialog open while loading; will close when mutation completes
   };
 
   // close dialog when mutation transitions from loading -> not loading
