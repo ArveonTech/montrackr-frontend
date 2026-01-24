@@ -75,6 +75,10 @@ const FormSubscription = ({ openSubcription, setOpenSubcription, onClose, isLoad
       errors.amount = "Amount is required and must be greater than zero";
     }
 
+    if (!formSubcription.paymentMethod) {
+      errors.paymentMethod = "Payment method is required";
+    }
+
     if (!formSubcription.interval) {
       errors.interval = "Interval is required";
     }
@@ -212,6 +216,9 @@ const FormSubscription = ({ openSubcription, setOpenSubcription, onClose, isLoad
                   ))}
                 </SelectContent>
               </Select>
+              <Activity mode={localErrors.paymentMethod ? "visible" : "hidden"}>
+                <p className=" text-sm mb-5 text-red-500">*{localErrors.title}</p>
+              </Activity>
             </div>
 
             <div className="space-y-2">
